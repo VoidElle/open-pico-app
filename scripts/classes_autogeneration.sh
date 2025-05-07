@@ -1,1 +1,1 @@
-fvm dart pub run build_runner build
+fvm dart run build_runner build
