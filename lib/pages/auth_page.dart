@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/providers/global_providers.dart';
+
+import '../utils/aes_crypt.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
 
@@ -84,7 +85,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   print('DESIDERED OUTPUT -> J9t31KUVnRWaCKc1NplO5A==');
 
                   // Encrypt the password using the provider
-                  final String encryptedPassword = ref.read(aesCryptProviderProvider).encryptText(_passwordController.text);
+                  final String encryptedPassword = ref.read(aesCryptProvider).encryptText(_passwordController.text);
                   print('REAL OUTPUT ->  ${encryptedPassword}');
 
                 }
