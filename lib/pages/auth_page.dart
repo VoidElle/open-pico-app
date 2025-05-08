@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../utils/aes_crypt.dart';
+import '../network/usecases/login_usecase.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
 
@@ -80,13 +80,16 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
 
-                  print('Username: ${_emailController.text}');
-                  print('Clear Password: ${_passwordController.text}');
-                  print('DESIDERED OUTPUT -> J9t31KUVnRWaCKc1NplO5A==');
+                  // Retrieve the values from the text fields
+                  final String email = _emailController.text;
+                  final String clearPassword = _passwordController.text;
 
-                  // Encrypt the password using the provider
-                  final String encryptedPassword = ref.read(aesCryptProvider).encryptText(_passwordController.text);
-                  print('REAL OUTPUT ->  ${encryptedPassword}');
+                  // Execute the login use case
+                  final LoginUseCase loginUseCase = ref.read(loginUseCaseProvider);
+                  loginUseCase.executeRequest(
+                    email: email,
+                    clearPassword: clearPassword,
+                  );
 
                 }
               },

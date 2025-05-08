@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/utils/constants.dart';
+import 'package:open_pico_app/network/network_inteceptor.dart';
+import 'package:open_pico_app/utils/constants/network_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,7 +18,7 @@ class NetworkHandler {
 
     dio = Dio();
 
-    dio.options.baseUrl = Constants.baseUrl;
+    dio.options.baseUrl = NetworkConstants.baseUrl;
 
     // Timeouts
     dio.options.connectTimeout = const Duration(seconds: 30);
@@ -34,7 +35,13 @@ class NetworkHandler {
       compact: false,
     );
 
+    // Add the logger to the Dio instance
     dio.interceptors.add(prettyDioLogger);
+
+    // Add the network interceptor
+    final NetworkInterceptor networkInterceptor = NetworkInterceptor();
+    dio.interceptors.add(networkInterceptor);
+
   }
 
 }
