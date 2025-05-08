@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:open_pico_app/providers/global_providers.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends ConsumerStatefulWidget {
 
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends ConsumerState<AuthPage> {
 
   // Key for the form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Controllers for the text fields
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +55,7 @@ class _AuthPageState extends State<AuthPage> {
 
           // Username form field
           TextFormField(
+            controller: _emailController,
             decoration: const InputDecoration(
               labelText: 'Username',
               hintText: 'Inserisci il tuo username',
@@ -57,6 +64,7 @@ class _AuthPageState extends State<AuthPage> {
 
           // Password form field
           TextFormField(
+            controller: _passwordController,
             decoration: const InputDecoration(
               labelText: 'Password',
               hintText: 'Inserisci la tua password',
@@ -70,11 +78,15 @@ class _AuthPageState extends State<AuthPage> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+
+                  print('Username: ${_emailController.text}');
+                  print('Clear Password: ${_passwordController.text}');
+                  print('DESIDERED OUTPUT -> J9t31KUVnRWaCKc1NplO5A==');
+
+                  // Encrypt the password using the provider
+                  final String encryptedPassword = ref.read(aesCryptProviderProvider).encryptText(_passwordController.text);
+                  print('REAL OUTPUT ->  ${encryptedPassword}');
+
                 }
               },
               child: const Text('Submit'),
