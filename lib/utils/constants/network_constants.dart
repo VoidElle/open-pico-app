@@ -25,18 +25,18 @@ class NetworkConstants {
   static const String userAgent = "Dalvik/2.1.0 (Linux; U; Android 16; sdk_gphone64_arm64 Build/BP22.250325.006)";
 
   // Backend results codes
-  static final int result_error = -1;
-  static final int result_ok = 0;
-  static final int result_incorrectPwdUser = 1;
-  static final int result_userToActivate = 2;
-  static final int result_userBlocked = 3;
-  static final int result_userNotFound = 4;
-  static final int result_deviceNotValid = 5;
-  static final int result_expiredPwd = 6;
-  static final int result_expiredTemporaryPwd = 7;
-  static final int result_moreDevices = 8;
-  static final int result_mailExists = 9;
-  static final int result_newTermOfUse = 10;
-  static final int result_wifi = 1234;
+  static const int result_error = -1;
+  static const int result_ok = 0;
+  static const int result_incorrectPwdUser = 1;
+  static const int result_userToActivate = 2;
+  static const int result_userBlocked = 3;
+  static const int result_userNotFound = 4;
+  static const int result_deviceNotValid = 5;
+  static const int result_expiredPwd = 6;
+  static const int result_expiredTemporaryPwd = 7;
+  static const int result_moreDevices = 8;
+  static const int result_mailExists = 9;
+  static const int result_newTermOfUse = 10;
+  static const int result_wifi = 1234;
 
 }
