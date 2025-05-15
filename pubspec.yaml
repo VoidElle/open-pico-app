@@ -1,0 +1,58 @@
+name: open_pico_app
+description: "Open Pico mobile application"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Design
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+
+  # Annotations
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+  riverpod_annotation: ^2.6.1
+
+  # Loggers
+  logger: ^2.5.0
+  pretty_dio_logger: ^1.4.0
+
+  # Networking
+  dio: ^5.8.0+1
+  retrofit: ^4.4.2
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Cryptography
+  encrypt: ^5.0.3
+  crypto: ^3.0.6
+
+  # Utils
+  go_router: ^15.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Linting
+  flutter_lints: ^5.0.0
+
+  # Serialization
+  freezed: ^3.0.6
+  json_serializable: ^6.9.5
+
+  # Code generation
+  build_runner: ^2.4.15
+  retrofit_generator: '>=8.0.0 <10.0.0'
+  riverpod_generator: ^2.6.5
+
+flutter:
+  uses-material-design: true

@@ -25,3 +25,12 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+.cache_ggshield
+open_pico_app.iml
+
+.idea/
+.fvm/
+
+*.g.dart
+*.freezed.dart
