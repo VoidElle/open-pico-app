@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_pico_app/models/responses/response_plant_model.dart';
 import 'package:open_pico_app/utils/parsers/plants_responses_parser.dart';
 
+import '../models/responses/response_device_model.dart';
 import '../models/responses/response_plant_model_wrapper_parsed.dart';
 
 class PlantsListPage extends ConsumerStatefulWidget {
@@ -82,19 +83,53 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
         return ListView.builder(
           shrinkWrap: true,
           itemCount: plants.length,
-          itemBuilder: (context, index) {
+          itemBuilder: (BuildContext context, int index) {
             final ResponsePlantModel plant = plants[index];
             return ListTile(
               title: Text(
-                plant.lvplName ?? 'Unknown Plant',
+                plant.lvplName != null
+                    ? "${plant.lvplName} (ID: ${plant.lvplUsanId ?? 'N/A'})"
+                    : 'Unknown Plant',
               ),
-              subtitle: Text(
-                'ID: ${plant.lvplUsanId ?? 'N/A'}',
-              ),
+              subtitle: _buildDevicesList(plant.devicesList),
             );
           },
         );
       },
+    );
+  }
+
+  // Method to build the list of devices for a given plant
+  // It returns a widget that displays the devices or a message if no devices are found
+  Widget _buildDevicesList(List<ResponseDeviceModel> devicesList) {
+
+    // If the devices list is empty, return a message indicating no devices found
+    if (devicesList.isEmpty) {
+      return const Text('No devices found for this plant.');
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: devicesList.map((ResponseDeviceModel device) {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            textStyle: const TextStyle(
+              fontSize: 16,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          onPressed: () {
+            // Your device tap logic here
+          },
+          child: Text(
+            '${device.name} (ID: ${device.deviceId ?? 'N/A'})',
+          ),
+        );
+      }).toList(),
     );
   }
 
