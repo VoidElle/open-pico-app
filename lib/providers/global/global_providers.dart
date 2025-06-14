@@ -1,7 +1,7 @@
 import 'package:open_pico_app/utils/constants/network_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'global_providers.g.dart';
+part 'generated/global_providers.g.dart';
 
 /// This class is responsible to expose global providers
 
@@ -25,4 +25,13 @@ class GlobalUserEmail extends _$GlobalUserEmail {
 
   void set(String newValue) => state = newValue;
   void reset() => state = null;
+}
+
+// A provider for the global Secure Storage repository
+@Riverpod(keepAlive: true)
+class GlobalSecureStorageRepository extends _$GlobalSecureStorageRepository {
+
+  @override
+  GlobalSecureStorageRepository build() => GlobalSecureStorageRepository();
+
 }

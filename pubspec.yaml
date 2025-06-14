@@ -36,7 +36,8 @@ dependencies:
   crypto: ^3.0.6
 
   # Utils
-  go_router: ^15.1.2
+  go_router: ^15.2.0
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:

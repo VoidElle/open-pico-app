@@ -16,6 +16,12 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class _AuthPageState extends ConsumerState<AuthPage> {
 
+  // State variable to toggle password visibility
+  bool _showPassword = false;
+
+  // State variable to determine if the credentials should be saved
+  bool _savePassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,11 +70,35 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               // Password form field
               TextFormField(
                 controller: ref.watch(authPagePasswordControllerProvider),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Password',
                   hintText: 'Inserisci la tua password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _showPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() => _showPassword = !_showPassword);
+                    },
+                  ),
                 ),
-                obscureText: true,
+                obscureText: !_showPassword,
+              ),
+
+              Row(
+                children: [
+                  Checkbox(
+                    value: _savePassword,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _savePassword = value ?? false;
+                      });
+                    },
+                  ),
+                  const Text('Salva password'),
+                ],
               ),
 
               // Submit button

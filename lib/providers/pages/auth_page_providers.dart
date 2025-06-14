@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'auth_page_providers.g.dart';
+part 'generated/auth_page_providers.g.dart';
 
 /// This class is responsible to expose the providers for the auth page
 

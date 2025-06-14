@@ -4,7 +4,7 @@ import 'package:open_pico_app/network/rest/login_rest_client.dart';
 import 'package:open_pico_app/network/rest/pico_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'global_rest_client_providers.g.dart';
+part 'generated/global_rest_client_providers.g.dart';
 
 /// This class is responsible to expose the providers for the rest clients
 
