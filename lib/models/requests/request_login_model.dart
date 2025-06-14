@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'request_login_model.freezed.dart';
-part 'request_login_model.g.dart';
+part 'generated/request_login_model.freezed.dart';
+part 'generated/request_login_model.g.dart';
 
 @freezed
 abstract class RequestLoginModel with _$RequestLoginModel {

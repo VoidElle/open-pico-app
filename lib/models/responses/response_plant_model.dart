@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:open_pico_app/models/responses/response_device_model.dart';
 
-part 'response_plant_model.freezed.dart';
-part 'response_plant_model.g.dart';
+part 'generated/response_plant_model.freezed.dart';
+part 'generated/response_plant_model.g.dart';
 
 @freezed
 abstract class ResponsePlantModel with _$ResponsePlantModel {

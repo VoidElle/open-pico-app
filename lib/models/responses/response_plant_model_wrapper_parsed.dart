@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:open_pico_app/models/responses/response_plant_model.dart';
 
-part 'response_plant_model_wrapper_parsed.freezed.dart';
-part 'response_plant_model_wrapper_parsed.g.dart';
+part 'generated/response_plant_model_wrapper_parsed.freezed.dart';
+part 'generated/response_plant_model_wrapper_parsed.g.dart';
 
 @freezed
 abstract class ResponsePlantModelWrapperParsed with _$ResponsePlantModelWrapperParsed {

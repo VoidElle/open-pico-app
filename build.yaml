@@ -1,0 +1,41 @@
+targets:
+  $default:
+    builders:
+
+      source_gen|combining_builder:
+        generate_for:
+
+          # Models - Requests
+          - lib/models/requests/**.dart
+
+          # Models - Responses
+          - lib/models/responses/**.dart
+
+          # Models - Internal
+          - lib/models/internal/**.dart
+
+        options:
+          build_extensions:
+
+            # Models - Requests generated files
+            '^lib/models/requests/{{}}.dart': 'lib/models/requests/generated/{{}}.g.dart'
+
+            # Models - Responses generated files
+            '^lib/models/responses/{{}}.dart': 'lib/models/responses/generated/{{}}.g.dart'
+
+            # Models - Internal generated files
+            '^lib/models/internal/{{}}.dart': 'lib/models/internal/generated/{{}}.g.dart'
+
+      freezed|freezed:
+        enabled: true
+        options:
+          build_extensions:
+
+            # Models - Requests freezed files
+            '^lib/models/requests/{{}}.dart': 'lib/models/requests/generated/{{}}.freezed.dart'
+
+            # Models - Responses freezed files
+            '^lib/models/responses/{{}}.dart': 'lib/models/responses/generated/{{}}.freezed.dart'
+
+            # Models - Internal freezed files
+            '^lib/models/internal/{{}}.dart': 'lib/models/internal/generated/{{}}.freezed.dart'

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'response_user_model.freezed.dart';
-part 'response_user_model.g.dart';
+part 'generated/response_user_model.freezed.dart';
+part 'generated/response_user_model.g.dart';
 
 @freezed
 abstract class ResponseUserModel with _$ResponseUserModel {

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'response_plant_model_wrapper_to_parse.freezed.dart';
-part 'response_plant_model_wrapper_to_parse.g.dart';
+part 'generated/response_plant_model_wrapper_to_parse.freezed.dart';
+part 'generated/response_plant_model_wrapper_to_parse.g.dart';
 
 @freezed
 abstract class ResponsePlantModelWrapperToParse with _$ResponsePlantModelWrapperToParse {
