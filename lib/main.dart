@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
-import 'package:open_pico_app/pages/devices_list_page.dart';
+import 'package:open_pico_app/pages/plants_list_page.dart';
 
 void main() {
   runApp(
@@ -19,8 +19,8 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) => AuthPage(),
     ),
     GoRoute(
-      path: DevicesListPage.route,
-      builder: (BuildContext context, GoRouterState state) => DevicesListPage(),
+      path: PlantsListPage.route,
+      builder: (BuildContext context, GoRouterState state) => PlantsListPage(),
     ),
   ],
 );

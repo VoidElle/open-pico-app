@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 
+import '../../models/responses/response_plant_model_wrapper_to_parse.dart';
 import '../use_cases/get_plants_use_case.dart';
 
 part 'pico_rest_client.g.dart';
@@ -12,7 +13,7 @@ abstract class PicoRestClient {
 
   @GET('/api/v1/GetPlants')
   @Headers(getPlantsUseCaseHeaders)
-  Future<dynamic> getPlants(
+  Future<ResponsePlantModelWrapperToParse> getPlants(
       @Header("Token") String token,
       @Header("Authorization") String authorization,
   );

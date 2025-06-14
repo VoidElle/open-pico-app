@@ -6,7 +6,7 @@ import 'package:open_pico_app/models/requests/request_login_model.dart';
 import 'package:open_pico_app/models/responses/response_user_model.dart';
 import 'package:open_pico_app/network/network_handler.dart';
 import 'package:open_pico_app/network/rest/login_rest_client.dart';
-import 'package:open_pico_app/pages/devices_list_page.dart';
+import 'package:open_pico_app/pages/plants_list_page.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -84,7 +84,7 @@ class LoginUseCase {
     ref.read(globalTokenProvider.notifier).set(token);
 
     // Navigate to the home page
-    context.go(DevicesListPage.route);
+    context.go(PlantsListPage.route);
   }
 
 }
