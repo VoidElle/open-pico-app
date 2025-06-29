@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_pico_app/models/responses/response_plant_model.dart';
 import 'package:open_pico_app/utils/parsers/plants_responses_parser.dart';
+import 'package:open_pico_app/widgets/plants_list/plants_list_appbar.dart';
 
 import '../models/responses/response_device_model.dart';
 import '../models/responses/response_plant_model_wrapper_parsed.dart';
@@ -30,11 +31,7 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Plants list',
-        ),
-      ),
+      appBar: PlantsListAppbar(),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [

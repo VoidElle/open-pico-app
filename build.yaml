@@ -14,6 +14,9 @@ targets:
           - lib/providers/global/**.dart
           - lib/providers/pages/**.dart
 
+          # Use cases
+          - lib/use_cases/auth/**.dart
+
         options:
           build_extensions:
 
@@ -25,6 +28,9 @@ targets:
             # Providers
             '^lib/providers/global/{{}}.dart': 'lib/providers/global/generated/{{}}.g.dart'
             '^lib/providers/pages/{{}}.dart': 'lib/providers/pages/generated/{{}}.g.dart'
+
+            # Use cases
+            '^lib/use_cases/auth/{{}}.dart': 'lib/use_cases/auth/generated/{{}}.g.dart'
 
       freezed|freezed:
         enabled: true
@@ -39,3 +45,6 @@ targets:
             # Providers
             '^lib/providers/global/{{}}.dart': 'lib/providers/global/generated/{{}}.freezed.dart'
             '^lib/providers/pages/{{}}.dart': 'lib/providers/pages/generated/{{}}.freezed.dart'
+
+            # Use cases
+            '^lib/use_cases/auth/{{}}.dart': 'lib/use_cases/auth/generated/{{}}.freezed.dart'
