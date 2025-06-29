@@ -82,13 +82,16 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
           itemCount: plants.length,
           itemBuilder: (BuildContext context, int index) {
             final ResponsePlantModel plant = plants[index];
-            return ListTile(
-              title: Text(
-                plant.lvplName != null
-                    ? "${plant.lvplName} (ID: ${plant.lvplUsanId ?? 'N/A'})"
-                    : 'Unknown Plant',
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: ListTile(
+                title: Text(
+                  plant.lvplName != null
+                      ? "${plant.lvplName} (ID: ${plant.lvplUsanId ?? 'N/A'})"
+                      : 'Unknown Plant',
+                ),
+                subtitle: _buildDevicesList(plant.devicesList),
               ),
-              subtitle: _buildDevicesList(plant.devicesList),
             );
           },
         );
@@ -105,28 +108,39 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
       return const Text('No devices found for this plant.');
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: devicesList.map((ResponseDeviceModel device) {
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            textStyle: const TextStyle(
-              fontSize: 16,
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 8,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: devicesList.map((ResponseDeviceModel device) {
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            child: ListTile(
+              leading: SizedBox(
+                height: 40,
+                width: 40,
+                child: Icon(
+                  Icons.hvac,
+                  size: 32,
+                ),
+              ),
+              title: Text(
+                device.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'ID: ${device.deviceId ?? 'N/A'}',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              onTap: () {
+                // Your device tap logic here
+              },
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          onPressed: () {
-            // Your device tap logic here
-          },
-          child: Text(
-            '${device.name} (ID: ${device.deviceId ?? 'N/A'})',
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
