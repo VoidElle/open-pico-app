@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/network/network_handler.dart';
-import 'package:open_pico_app/network/rest/login_rest_client.dart';
-import 'package:open_pico_app/network/rest/pico_rest_client.dart';
+import 'package:open_pico_app/use_cases/network/core/network_handler.dart';
+import 'package:open_pico_app/use_cases/network/rest_clients/login_rest_client.dart';
+import 'package:open_pico_app/use_cases/network/rest_clients/pico_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'generated/global_rest_client_providers.g.dart';

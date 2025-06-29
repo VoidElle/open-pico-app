@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 
-import '../../models/responses/response_plant_model_wrapper_to_parse.dart';
-import '../use_cases/get_plants_use_case.dart';
+import '../../../models/responses/response_plant_model_wrapper_to_parse.dart';
+import '../executor/get_plants_use_case.dart';
 
-part 'pico_rest_client.g.dart';
+part 'generated/pico_rest_client.g.dart';
 
 @RestApi()
 abstract class PicoRestClient {

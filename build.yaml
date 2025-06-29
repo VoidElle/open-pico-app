@@ -16,6 +16,9 @@ targets:
 
           # Use cases
           - lib/use_cases/auth/**.dart
+          - lib/use_cases/network/core/**.dart
+          - lib/use_cases/network/executor/**.dart
+          - lib/use_cases/network/rest_clients/**.dart
 
         options:
           build_extensions:
@@ -31,6 +34,9 @@ targets:
 
             # Use cases
             '^lib/use_cases/auth/{{}}.dart': 'lib/use_cases/auth/generated/{{}}.g.dart'
+            '^lib/use_cases/network/core/{{}}.dart': 'lib/use_cases/network/core/generated/{{}}.g.dart'
+            '^lib/use_cases/network/executor/{{}}.dart': 'lib/use_cases/network/executor/generated/{{}}.g.dart'
+            '^lib/use_cases/network/rest_clients/{{}}.dart': 'lib/use_cases/network/rest_clients/generated/{{}}.g.dart'
 
       freezed|freezed:
         enabled: true
@@ -48,3 +54,6 @@ targets:
 
             # Use cases
             '^lib/use_cases/auth/{{}}.dart': 'lib/use_cases/auth/generated/{{}}.freezed.dart'
+            '^lib/use_cases/network/core/{{}}.dart': 'lib/use_cases/network/core/generated/{{}}.freezed.dart'
+            '^lib/use_cases/network/executor/{{}}.dart': 'lib/use_cases/network/executor/generated/{{}}.freezed.dart'
+            '^lib/use_cases/network/rest_clients/{{}}.dart': 'lib/use_cases/network/rest_clients/generated/{{}}.freezed.dart'

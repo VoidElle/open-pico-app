@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../network/network_handler.dart';
+import '../network/core/network_handler.dart';
 import '../../repositories/secure_storage/secure_storage_repository.dart';
 import '../../repositories/secure_storage/usecases/secure_storage_write_read_login_data_usecase.dart';
 

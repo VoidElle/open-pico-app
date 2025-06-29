@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/network/network_inteceptor.dart';
+import 'package:open_pico_app/utils/network_inteceptor.dart';
 import 'package:open_pico_app/utils/constants/network_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'network_handler.g.dart';
+part 'generated/network_handler.g.dart';
 
 class NetworkHandler {
 

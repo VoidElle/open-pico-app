@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/network/network_handler.dart';
+import 'package:open_pico_app/use_cases/network/core/network_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../utils/constants/network_constants.dart';
+import '../../../utils/constants/network_constants.dart';
 
-part 'get_plants_use_case.g.dart';
+part 'generated/get_plants_use_case.g.dart';
 
 // Headers used in the request use case
 const Map<String, dynamic> getPlantsUseCaseHeaders = {

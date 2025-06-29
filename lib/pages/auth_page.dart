@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_pico_app/repositories/secure_storage/secure_storage_repository.dart';
 import 'package:open_pico_app/repositories/secure_storage/usecases/secure_storage_write_read_login_data_usecase.dart';
 
-import '../network/use_cases/login_use_case.dart';
+import '../use_cases/network/executor/login_use_case.dart';
 import '../providers/pages/auth_page_providers.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
