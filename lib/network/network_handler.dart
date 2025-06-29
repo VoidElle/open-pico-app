@@ -5,8 +5,6 @@ import 'package:open_pico_app/utils/constants/network_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'dio_network_interceptor.dart';
-
 part 'network_handler.g.dart';
 
 class NetworkHandler {
@@ -25,10 +23,6 @@ class NetworkHandler {
     // Timeouts
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
-
-    dio.interceptors.add(
-      DioNetworkInterceptor(),
-    );
 
     // Instantiate the logger for HTTP requests
     final PrettyDioLogger prettyDioLogger = PrettyDioLogger(
