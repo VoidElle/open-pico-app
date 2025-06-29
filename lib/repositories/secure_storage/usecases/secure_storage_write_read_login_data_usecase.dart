@@ -14,6 +14,11 @@ class SecureStorageWriteReadLoginDataUseCase {
     final String? email = await flutterSecureStorage.read(key: SecureStorageConstants.loginEmailKey);
     final String? password = await flutterSecureStorage.read(key: SecureStorageConstants.loginPasswordKey);
 
+    // If either email or password is null, return an empty map
+    if (email == null || password == null) {
+      return <String, dynamic>{};
+    }
+
     return <String, dynamic>{
       'email': email,
       'password': password,

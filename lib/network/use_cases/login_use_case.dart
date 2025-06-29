@@ -7,6 +7,8 @@ import 'package:open_pico_app/models/responses/response_user_model.dart';
 import 'package:open_pico_app/network/network_handler.dart';
 import 'package:open_pico_app/network/rest/login_rest_client.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
+import 'package:open_pico_app/repositories/secure_storage/secure_storage_repository.dart';
+import 'package:open_pico_app/repositories/secure_storage/usecases/secure_storage_write_read_login_data_usecase.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -41,6 +43,7 @@ class LoginUseCase {
 
   Future<void> execute({
     required BuildContext context,
+    bool savePassword = false,
   }) async {
 
     // If the form is not valid, return early
@@ -82,6 +85,13 @@ class LoginUseCase {
 
     // Set the user model in the global state
     ref.read(globalTokenProvider.notifier).set(token);
+
+    // If the savePassword flag is true, save the email and encrypted password to secure storage
+    if (savePassword) {
+      final SecureStorageWriteReadLoginDataUseCase secureStorageWriteReadLoginDataUseCase = SecureStorageWriteReadLoginDataUseCase(SecureStorageRepository.instance);
+      await secureStorageWriteReadLoginDataUseCase.writeData(email, clearPassword);
+      debugPrint("[i] Login data saved to secure storage.");
+    }
 
     // Navigate to the home page
     context.go(PlantsListPage.route);

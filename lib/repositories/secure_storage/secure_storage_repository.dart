@@ -4,7 +4,7 @@ class SecureStorageRepository {
 
   static FlutterSecureStorage? _instance;
 
-  SecureStorageRepository() {
+  static void initialize() {
     if (_instance != null) {
       throw Exception('SecureStorageRepository is a singleton and has already been instantiated.');
     } else {

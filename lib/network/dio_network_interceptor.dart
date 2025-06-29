@@ -36,6 +36,13 @@ class DioNetworkInterceptor extends InterceptorsWrapper {
 
   @override
   Future<dynamic> onError(DioException err, ErrorInterceptorHandler handler) async {
+
+    // Retrieve the current context from the navigator key
+    final BuildContext context = GlobalSingleton.navigatorKey.currentState!.context;
+
+    // Hide the loading dialog
+    context.pop();
+
     return super.onError(err, handler);
   }
 

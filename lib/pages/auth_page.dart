@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:open_pico_app/repositories/secure_storage/secure_storage_repository.dart';
+import 'package:open_pico_app/repositories/secure_storage/usecases/secure_storage_write_read_login_data_usecase.dart';
 
 import '../network/use_cases/login_use_case.dart';
 import '../providers/pages/auth_page_providers.dart';
@@ -21,6 +23,35 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   // State variable to determine if the credentials should be saved
   bool _savePassword = false;
+
+  @override
+  void initState() {
+
+    // Instance the SecureStorageWriteReadLoginDataUseCase
+    final SecureStorageWriteReadLoginDataUseCase secureStorageWriteReadLoginDataUseCase = SecureStorageWriteReadLoginDataUseCase(SecureStorageRepository.instance);
+
+    // Retrieve saved login data from secure storage
+    secureStorageWriteReadLoginDataUseCase.readData().then((Map<String, dynamic> data) {
+
+      // If the data is empty, do nothing
+      if (data.isEmpty) {
+        return;
+      }
+
+      // Set the email and password fields with the retrieved data
+      ref.read(authPageEmailControllerProvider).text = data['email'];
+      ref.read(authPagePasswordControllerProvider).text = data['password'];
+
+      // Execute the login flow
+      ref.read(loginUseCaseProvider).execute(
+        context: context,
+        savePassword: true,
+      );
+
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +139,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   onPressed: () {
                     ref.read(loginUseCaseProvider).execute(
                       context: context,
+                      savePassword: _savePassword
                     );
                   },
                   child: const Text('Submit'),
