@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
-import 'package:open_pico_app/repositories/secure_storage/secure_storage_repository.dart';
+import 'package:open_pico_app/repositories/secure_storage_repository.dart';
 import 'package:open_pico_app/utils/global_singleton.dart';
 
 void main() {

@@ -7,8 +7,8 @@ import 'package:open_pico_app/models/responses/response_user_model.dart';
 import 'package:open_pico_app/use_cases/network/core/network_handler.dart';
 import 'package:open_pico_app/use_cases/network/rest_clients/login_rest_client.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
-import 'package:open_pico_app/repositories/secure_storage/secure_storage_repository.dart';
-import 'package:open_pico_app/repositories/secure_storage/usecases/secure_storage_write_read_login_data_usecase.dart';
+import 'package:open_pico_app/repositories/secure_storage_repository.dart';
+import 'package:open_pico_app/use_cases/secure_storage/secure_storage_write_read_login_data_usecase.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

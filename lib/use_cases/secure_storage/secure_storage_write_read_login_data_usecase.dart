@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../utils/constants/secure_storage_constants.dart';
+import '../../utils/constants/secure_storage_constants.dart';
 
 class SecureStorageWriteReadLoginDataUseCase {
 
