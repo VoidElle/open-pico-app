@@ -16,25 +16,37 @@ class GridIconLabelCtaItem extends StatelessWidget {
     return InkWell(
       onTap: internalGridIconLabelCtaModel.onTap,
       borderRadius: BorderRadius.circular(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+      child: Container(
+        decoration: BoxDecoration(
+          border: internalGridIconLabelCtaModel.selected
+              ? Border.all(
+                  color: internalGridIconLabelCtaModel.borderColor,
+                  width: 2,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-          Icon(
-            internalGridIconLabelCtaModel.iconData,
-            size: 36,
-          ),
+            Icon(
+              internalGridIconLabelCtaModel.iconData,
+              size: 36,
+            ),
 
-          const SizedBox(
-            height: 8,
-          ),
+            const SizedBox(
+              height: 8,
+            ),
 
-          Text(
-            internalGridIconLabelCtaModel.text,
-            textAlign: TextAlign.center,
-          ),
+            Text(
+              internalGridIconLabelCtaModel.text,
+              textAlign: TextAlign.center,
+            ),
 
-        ],
+          ],
+        ),
       ),
     );
   }

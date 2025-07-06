@@ -45,6 +45,10 @@ class PicoStatusPage extends StatelessWidget {
         text: 'ON / OFF',
         iconData: Icons.settings_remote,
         onTap: () {},
+        selected: deviceStatus.isDeviceOn,
+        borderColor: deviceStatus.isDeviceOn
+            ? Colors.green
+            : Colors.red,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2 / Umiditiá',
@@ -78,18 +82,34 @@ class PicoStatusPage extends StatelessWidget {
           deviceStatus.name,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          children: items.map((InternalGridIconLabelCtaModel item) {
-            return GridIconLabelCtaItem(
-              internalGridIconLabelCtaModel: item,
-            );
-          }).toList(),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          Text(
+            "VMC é attualmente ${deviceStatus.isDeviceOn ? "ACCESO" : "SPENTO"}",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              shrinkWrap: true,
+              children: items.map((InternalGridIconLabelCtaModel item) {
+                return GridIconLabelCtaItem(
+                  internalGridIconLabelCtaModel: item,
+                );
+              }).toList(),
+            ),
+          ),
+
+        ],
       ),
     );
   }
