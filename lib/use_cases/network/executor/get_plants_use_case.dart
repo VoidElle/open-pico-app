@@ -9,12 +9,10 @@ import '../../../utils/constants/network_constants.dart';
 part 'generated/get_plants_use_case.g.dart';
 
 // Headers used in the request use case
-const Map<String, dynamic> getPlantsUseCaseHeaders = {
+const Map<String, dynamic> commonHeaders = {
   'Accept-Encoding': 'gzip',
-  // 'Authorization': NetworkConstants.loggedApiKey,
   'Connection': 'Keep-Alive',
   'Host': NetworkConstants.host,
-  // Todo: Dynamic 'Token': NetworkConstants.token,
   'User-Agent': NetworkConstants.userAgent,
   'UserObj-Agent': NetworkConstants.userObjAgent,
 };

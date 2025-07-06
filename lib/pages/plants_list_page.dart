@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/models/responses/response_plant_model.dart';
 import 'package:open_pico_app/utils/parsers/plants_responses_parser.dart';
 import 'package:open_pico_app/widgets/plants_list/plants_list_appbar.dart';
@@ -134,8 +135,9 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
                 'ID: ${device.deviceId ?? 'N/A'}',
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
-              onTap: () {
-                // Your device tap logic here
+              onTap: () async {
+                final DeviceStatus deviceStatus = await PlantsResponsesParser.retrieveSpecificPlantParsed(ref, device.serial, "1234");
+                print(deviceStatus);
               },
             ),
           );
