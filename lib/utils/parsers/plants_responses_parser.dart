@@ -56,7 +56,7 @@ class PlantsResponsesParser {
   }
 
   // This method retrieves a specific plant and parses it into a structured format
-  static Future<DeviceStatus> retrieveSpecificPlantParsed(WidgetRef ref, String serial, String pin) async {
+  static Future<DeviceStatus> retrieveSpecificPlantParsed(Ref ref, String serial, String pin) async {
 
     // Retrieve the new token from the AES crypt provider
     final String newToken = ref.read(aesCryptProvider).retrieveNewToken() ?? '';
