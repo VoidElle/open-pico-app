@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/models/internal/internal_grid_icon_label_cta_model.dart';
+import 'package:open_pico_app/models/responses/common_response_wrapper.dart';
 import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
+import 'package:open_pico_app/utils/command_utils.dart';
 
+import '../models/requests/request_command_model.dart';
+import '../providers/global/global_providers.dart';
+import '../providers/global/global_rest_client_providers.dart';
+import '../utils/aes_crypt.dart';
+import '../utils/constants/network_constants.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
-class PicoStatusPage extends StatelessWidget {
+class PicoStatusPage extends ConsumerWidget {
 
   const PicoStatusPage({
     required this.deviceStatus,
@@ -18,7 +26,7 @@ class PicoStatusPage extends StatelessWidget {
   static const String route = '/pico-status';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final List<InternalGridIconLabelCtaModel> items = <InternalGridIconLabelCtaModel>[
       InternalGridIconLabelCtaModel(
@@ -44,7 +52,37 @@ class PicoStatusPage extends StatelessWidget {
       InternalGridIconLabelCtaModel(
         text: 'ON / OFF',
         iconData: Icons.settings_remote,
-        onTap: () {},
+        onTap: () async {
+
+          // Todo: Move it into a use-case
+
+          // Todo: Retrieve dynamic pin
+          final String command = CommandUtils.getOnOffCmd(!deviceStatus.isDeviceOn, "1234");
+
+          // Todo: Pass pin and serial dynamically
+          final RequestCommandModel requestCommandModel = RequestCommandModel(
+            command: command,
+            deviceName: deviceStatus.name,
+            devicePin: "1234",
+            deviceSerial: "E9BB31B865E4",
+          );
+
+          // Retrieve the new token from the AES crypt provider
+          final String newToken = ref.read(aesCryptProvider).retrieveNewToken() ?? '';
+
+          // Retrieve the current user's email from the global user email provider
+          final String? currentEmail = ref.read(globalUserEmailProvider);
+
+          // Retrieve the API key using the current email
+          final String authorization = NetworkConstants.retrieveApiKey(currentEmail);
+
+          // Todo: Pass pin and serial dynamically
+          final CommonResponseWrapper deviceStatusResponse = await ref
+              .read(picoRestClientProvider)
+              .executeCommand(newToken, authorization, "E9BB31B865E4", "1234", requestCommandModel);
+
+          debugPrint(deviceStatusResponse.toString());
+        },
         selected: deviceStatus.isDeviceOn,
         borderColor: deviceStatus.isDeviceOn
             ? Colors.green

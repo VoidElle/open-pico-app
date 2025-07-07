@@ -34,7 +34,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: PicoStatusPage.route,
       builder: (BuildContext context, GoRouterState state) {
-        final deviceStatus = state.extra as DeviceStatus;
+        final DeviceStatus deviceStatus = state.extra as DeviceStatus;
         return PicoStatusPage(deviceStatus: deviceStatus);
       },
     ),
