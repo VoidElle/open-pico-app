@@ -9,6 +9,7 @@ targets:
           - lib/models/requests/**.dart
           - lib/models/responses/**.dart
           - lib/models/internal/**.dart
+          - lib/models/props/**.dart
 
           # Providers
           - lib/providers/global/**.dart
@@ -20,6 +21,7 @@ targets:
           - lib/use_cases/network/executor/**.dart
           - lib/use_cases/network/rest_clients/**.dart
           - lib/use_cases/status/**.dart
+          - lib/use_cases/pico/**.dart
 
         options:
           build_extensions:
@@ -28,6 +30,7 @@ targets:
             '^lib/models/requests/{{}}.dart': 'lib/models/requests/generated/{{}}.g.dart'
             '^lib/models/responses/{{}}.dart': 'lib/models/responses/generated/{{}}.g.dart'
             '^lib/models/internal/{{}}.dart': 'lib/models/internal/generated/{{}}.g.dart'
+            '^lib/models/props/{{}}.dart': 'lib/models/props/generated/{{}}.g.dart'
 
             # Providers
             '^lib/providers/global/{{}}.dart': 'lib/providers/global/generated/{{}}.g.dart'
@@ -39,6 +42,7 @@ targets:
             '^lib/use_cases/network/executor/{{}}.dart': 'lib/use_cases/network/executor/generated/{{}}.g.dart'
             '^lib/use_cases/network/rest_clients/{{}}.dart': 'lib/use_cases/network/rest_clients/generated/{{}}.g.dart'
             '^lib/use_cases/status/{{}}.dart': 'lib/use_cases/status/generated/{{}}.g.dart'
+            '^lib/use_cases/pico/{{}}.dart': 'lib/use_cases/pico/generated/{{}}.g.dart'
 
       freezed|freezed:
         enabled: true
@@ -49,6 +53,7 @@ targets:
             '^lib/models/requests/{{}}.dart': 'lib/models/requests/generated/{{}}.freezed.dart'
             '^lib/models/responses/{{}}.dart': 'lib/models/responses/generated/{{}}.freezed.dart'
             '^lib/models/internal/{{}}.dart': 'lib/models/internal/generated/{{}}.freezed.dart'
+            '^lib/models/props/{{}}.dart': 'lib/models/props/generated/{{}}.freezed.dart'
 
             # Providers
             '^lib/providers/global/{{}}.dart': 'lib/providers/global/generated/{{}}.freezed.dart'
@@ -60,4 +65,5 @@ targets:
             '^lib/use_cases/network/executor/{{}}.dart': 'lib/use_cases/network/executor/generated/{{}}.freezed.dart'
             '^lib/use_cases/network/rest_clients/{{}}.dart': 'lib/use_cases/network/rest_clients/generated/{{}}.freezed.dart'
             '^lib/use_cases/status/{{}}.dart': 'lib/use_cases/status/generated/{{}}.freezed.dart'
+            '^lib/use_cases/pico/{{}}.dart': 'lib/use_cases/pico/generated/{{}}.freezed.dart'
 

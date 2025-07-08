@@ -138,7 +138,11 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
               onTap: () async {
                 await ref
                     .read(getDeviceDetailsTapUsecaseProvider)
-                    .execute(context: context, serial: device.serial);
+                    .execute(
+                      context: context,
+                      serial: device.serial,
+                      responseDeviceModel: device,
+                    );
               },
             ),
           );

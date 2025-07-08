@@ -7,26 +7,29 @@ import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
 
-import '../models/requests/request_command_model.dart';
-import '../providers/global/global_providers.dart';
-import '../providers/global/global_rest_client_providers.dart';
-import '../utils/aes_crypt.dart';
-import '../utils/constants/network_constants.dart';
+import '../models/props/pico_status_page_props.dart';
+import '../models/responses/response_device_model.dart';
+import '../repositories/secure_storage_repository.dart';
+import '../use_cases/pico/pico_execute_command_usecase.dart';
+import '../use_cases/secure_storage/secure_storage_write_read_device_pin_usecase.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
 class PicoStatusPage extends ConsumerWidget {
 
   const PicoStatusPage({
-    required this.deviceStatus,
+    required this.picoStatusPageProps,
     super.key,
   });
 
-  final DeviceStatus deviceStatus;
+  final PicoStatusPageProps picoStatusPageProps;
 
   static const String route = '/pico-status';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final DeviceStatus deviceStatus = picoStatusPageProps.deviceStatus;
+    final ResponseDeviceModel responseDeviceModel = picoStatusPageProps.responseDeviceModel;
 
     final List<InternalGridIconLabelCtaModel> items = <InternalGridIconLabelCtaModel>[
       InternalGridIconLabelCtaModel(
@@ -54,34 +57,28 @@ class PicoStatusPage extends ConsumerWidget {
         iconData: Icons.settings_remote,
         onTap: () async {
 
-          // Todo: Move it into a use-case
+          // Retrieve the PIN from the Secure Storage
+          final SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase = SecureStorageWriteReadDevicePinUsecase(SecureStorageRepository.instance);
+          final Map<String, dynamic> data = await secureStorageWriteReadDevicePinUsecase.readData(responseDeviceModel.serial);
 
-          // Todo: Retrieve dynamic pin
-          final String command = CommandUtils.getOnOffCmd(!deviceStatus.isDeviceOn, "1234");
+          // Get the PIN from the retrieved data
+          final String devicePin = data['pin'];
 
-          // Todo: Pass pin and serial dynamically
-          final RequestCommandModel requestCommandModel = RequestCommandModel(
-            command: command,
-            deviceName: deviceStatus.name,
-            devicePin: "1234",
-            deviceSerial: "E9BB31B865E4",
-          );
+          final String command = CommandUtils
+              .getOnOffCmd(!deviceStatus.isDeviceOn, devicePin);
 
-          // Retrieve the new token from the AES crypt provider
-          final String newToken = ref.read(aesCryptProvider).retrieveNewToken() ?? '';
+          final PicoExecuteCommandUsecase picoExecuteCommandUsecase = ref
+              .read(getPicoExecuteCommandUsecaseProvider);
 
-          // Retrieve the current user's email from the global user email provider
-          final String? currentEmail = ref.read(globalUserEmailProvider);
+          final CommonResponseWrapper response = await picoExecuteCommandUsecase
+              .execute(
+                command: command,
+                deviceName: deviceStatus.name,
+                devicePin: devicePin,
+                deviceSerial: responseDeviceModel.serial,
+              );
 
-          // Retrieve the API key using the current email
-          final String authorization = NetworkConstants.retrieveApiKey(currentEmail);
-
-          // Todo: Pass pin and serial dynamically
-          final CommonResponseWrapper deviceStatusResponse = await ref
-              .read(picoRestClientProvider)
-              .executeCommand(newToken, authorization, "E9BB31B865E4", "1234", requestCommandModel);
-
-          debugPrint(deviceStatusResponse.toString());
+          debugPrint(response.toString());
         },
         selected: deviceStatus.isDeviceOn,
         borderColor: deviceStatus.isDeviceOn
@@ -117,7 +114,7 @@ class PicoStatusPage extends ConsumerWidget {
           onPressed: () => context.go(PlantsListPage.route),
         ),
         title: Text(
-          deviceStatus.name,
+          picoStatusPageProps.deviceStatus.name,
         ),
       ),
       body: Column(
@@ -125,7 +122,7 @@ class PicoStatusPage extends ConsumerWidget {
         children: [
 
           Text(
-            "VMC é attualmente ${deviceStatus.isDeviceOn ? "ACCESO" : "SPENTO"}",
+            "VMC é attualmente ${picoStatusPageProps.deviceStatus.isDeviceOn ? "ACCESO" : "SPENTO"}",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

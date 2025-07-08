@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_pico_app/models/props/pico_status_page_props.dart';
 import 'package:open_pico_app/models/responses/common_response_wrapper.dart';
 import 'package:open_pico_app/pages/pico_status_page.dart';
 import 'package:open_pico_app/use_cases/secure_storage/secure_storage_write_read_device_pin_usecase.dart';
@@ -9,6 +10,7 @@ import 'package:open_pico_app/widgets/dialogs/text_dialog.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/responses/device_status.dart';
+import '../../models/responses/response_device_model.dart';
 import '../../repositories/secure_storage_repository.dart';
 import '../../utils/parsers/plants_responses_parser.dart';
 import '../../widgets/dialogs/input_pin_dialog.dart';
@@ -26,13 +28,14 @@ class DeviceDetailsTapUsecase {
   Future<void> execute({
     required BuildContext context,
     required String serial,
+    required ResponseDeviceModel responseDeviceModel,
   }) async {
 
     // Retrieve the PIN from the Secure Storage
     final SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase = SecureStorageWriteReadDevicePinUsecase(SecureStorageRepository.instance);
     final Map<String, dynamic> data = await secureStorageWriteReadDevicePinUsecase.readData(serial);
     if (data.isEmpty || !data.containsKey("pin")) {
-      await handleInputPin(context, serial, secureStorageWriteReadDevicePinUsecase, false);
+      await handleInputPin(context, serial, secureStorageWriteReadDevicePinUsecase, false, responseDeviceModel);
       return;
     }
 
@@ -45,8 +48,14 @@ class DeviceDetailsTapUsecase {
       final DeviceStatus deviceStatus = await PlantsResponsesParser
           .retrieveSpecificPlantParsed(ref, serial, pin);
 
+      // Create the props for the PicoStatusPage
+      final PicoStatusPageProps picoStatusPageProps = PicoStatusPageProps(
+        deviceStatus: deviceStatus,
+        responseDeviceModel: responseDeviceModel,
+      );
+
       // Redirect the user to the PicoStatusPage with the device's info
-      context.go(PicoStatusPage.route, extra: deviceStatus);
+      context.go(PicoStatusPage.route, extra: picoStatusPageProps);
 
       return;
     } catch (e) {
@@ -58,7 +67,7 @@ class DeviceDetailsTapUsecase {
           if (data.isNotEmpty) {
             final CommonResponseWrapper response = CommonResponseWrapper.fromJson(data);
             if (response.resCode == 2) {
-              await handleInputPin(context, serial, secureStorageWriteReadDevicePinUsecase, true);
+              await handleInputPin(context, serial, secureStorageWriteReadDevicePinUsecase, true, responseDeviceModel);
               return;
             }
           }
@@ -76,11 +85,15 @@ class DeviceDetailsTapUsecase {
 
   }
 
-  Future<void> handleInputPin(BuildContext context, String serial, SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase, bool previousPinError) async {
+  Future<void> handleInputPin(BuildContext context, String serial, SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase, bool previousPinError, ResponseDeviceModel responseDeviceModel) async {
     final String? pin = await InputPinDialog.show(context, previousPinError);
     if (pin != null) {
       await secureStorageWriteReadDevicePinUsecase.writeData(serial, pin);
-      await execute(context: context, serial: serial);
+      await execute(
+        context: context,
+        serial: serial,
+        responseDeviceModel: responseDeviceModel,
+      );
     }
   }
 

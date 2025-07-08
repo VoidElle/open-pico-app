@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
 import 'package:open_pico_app/pages/pico_status_page.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
 import 'package:open_pico_app/repositories/secure_storage_repository.dart';
 import 'package:open_pico_app/utils/global_singleton.dart';
+
+import 'models/props/pico_status_page_props.dart';
 
 void main() {
 
@@ -34,8 +35,10 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: PicoStatusPage.route,
       builder: (BuildContext context, GoRouterState state) {
-        final DeviceStatus deviceStatus = state.extra as DeviceStatus;
-        return PicoStatusPage(deviceStatus: deviceStatus);
+        final PicoStatusPageProps picoStatusPageProps = state.extra as PicoStatusPageProps;
+        return PicoStatusPage(
+          picoStatusPageProps: picoStatusPageProps,
+        );
       },
     ),
   ],
