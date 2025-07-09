@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/models/requests/request_login_model.dart';
 import 'package:open_pico_app/models/responses/response_user_model.dart';
-import 'package:open_pico_app/singletons/global_token_singleton.dart';
+import 'package:open_pico_app/repositories/global_token_repository.dart';
 import 'package:open_pico_app/use_cases/network/core/network_handler.dart';
 import 'package:open_pico_app/use_cases/network/rest_clients/login_rest_client.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
@@ -85,7 +85,7 @@ class LoginUseCase {
     final String token = responseUserModel.token;
 
     // Set the user model in the global state
-    GlobalTokenSingleton.token = token;
+    GlobalTokenRepository.token = token;
 
     // If the savePassword flag is true, save the email and encrypted password to secure storage
     if (savePassword) {

@@ -67,10 +67,8 @@ class PicoStatusPage extends ConsumerWidget {
           final String command = CommandUtils
               .getOnOffCmd(!deviceStatus.isDeviceOn, devicePin);
 
-          final PicoExecuteCommandUsecase picoExecuteCommandUsecase = ref
-              .read(getPicoExecuteCommandUsecaseProvider);
-
-          final CommonResponseWrapper response = await picoExecuteCommandUsecase
+          final CommonResponseWrapper response = await ref
+              .read(getPicoExecuteCommandUsecaseProvider)
               .execute(
                 command: command,
                 deviceName: deviceStatus.name,

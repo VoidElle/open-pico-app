@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:open_pico_app/singletons/global_token_singleton.dart';
+import 'package:open_pico_app/repositories/global_token_repository.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -51,7 +51,7 @@ class AESCrypt {
   // !!! WARNING: Every time an API call is done, a new token needs to be generated with this function !!!
   String? retrieveNewToken() {
     try {
-      final String oldToken = GlobalTokenSingleton.token ?? '';
+      final String oldToken = GlobalTokenRepository.token ?? '';
       final String decryptedToken;
 
       try {
@@ -79,7 +79,7 @@ class AESCrypt {
           print('New token encrypted: $newToken');
 
           // Set the new token
-          GlobalTokenSingleton.token = newToken;
+          GlobalTokenRepository.token = newToken;
 
           return newToken;
         } catch (e) {
