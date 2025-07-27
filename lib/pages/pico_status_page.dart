@@ -5,13 +5,12 @@ import 'package:open_pico_app/models/internal/internal_grid_icon_label_cta_model
 import 'package:open_pico_app/models/responses/common_response_wrapper.dart';
 import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
+import 'package:open_pico_app/use_cases/status/execute_change_status_command_usecase.dart';
+import 'package:open_pico_app/use_cases/utils/get_device_pin_usecase.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
 
 import '../models/props/pico_status_page_props.dart';
 import '../models/responses/response_device_model.dart';
-import '../repositories/secure_storage_repository.dart';
-import '../use_cases/pico/pico_execute_command_usecase.dart';
-import '../use_cases/secure_storage/secure_storage_write_read_device_pin_usecase.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
 class PicoStatusPage extends ConsumerWidget {
@@ -57,23 +56,19 @@ class PicoStatusPage extends ConsumerWidget {
         iconData: Icons.settings_remote,
         onTap: () async {
 
-          // Retrieve the PIN from the Secure Storage
-          final SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase = SecureStorageWriteReadDevicePinUsecase(SecureStorageRepository.instance);
-          final Map<String, dynamic> data = await secureStorageWriteReadDevicePinUsecase.readData(responseDeviceModel.serial);
-
-          // Get the PIN from the retrieved data
-          final String devicePin = data['pin'];
+          final String devicePin = await ref
+              .read(getGetDevicePinUsecaseProvider)
+              .execute(deviceSerial: responseDeviceModel.serial);
 
           final String command = CommandUtils
               .getOnOffCmd(!deviceStatus.isDeviceOn, devicePin);
 
           final CommonResponseWrapper response = await ref
-              .read(getPicoExecuteCommandUsecaseProvider)
+              .read(getExecuteChangeStatusCommandUsecaseProvider)
               .execute(
+                deviceStatus: deviceStatus,
+                responseDeviceModel: responseDeviceModel,
                 command: command,
-                deviceName: deviceStatus.name,
-                devicePin: devicePin,
-                deviceSerial: responseDeviceModel.serial,
               );
 
           debugPrint(response.toString());

@@ -24,7 +24,6 @@ part 'generated/login_use_case.g.dart';
 // Headers used in the request use case
 const Map<String, dynamic> loginUseCaseHeaders = {
   'Accept-Encoding': 'gzip',
-  // 'Authorization': NetworkConstants.unloggedApiKey,
   'Connection': 'Keep-Alive',
   'Content-Length': 284,
   'Content-Type': 'application/json',
