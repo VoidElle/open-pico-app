@@ -6,8 +6,19 @@ import 'package:open_pico_app/widgets/dialogs/loading_dialog.dart';
 
 class NetworkInterceptor extends InterceptorsWrapper {
 
+  // List of paths that do not show a loader (polling, etc...)
+  final List<String> _pathsNotShowingLoader = <String>[
+    '/api/v1/GetPICOState',
+  ];
+
   @override
   Future<dynamic> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+
+    // Handling if the API request path does not have to show a loader
+    final String path = options.path;
+    if (_pathsNotShowingLoader.contains(path)) {
+      return super.onRequest(options, handler);
+    }
 
     // Retrieve the current context from the navigator key
     final BuildContext context = GlobalSingleton.navigatorKey.currentState!.context;
@@ -25,6 +36,12 @@ class NetworkInterceptor extends InterceptorsWrapper {
   @override
   Future<dynamic> onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) async {
 
+    // Handling if the API request path does not have to show a loader
+    final String path = response.requestOptions.path;
+    if (_pathsNotShowingLoader.contains(path)) {
+      return super.onResponse(response, handler);
+    }
+
     // Retrieve the current context from the navigator key
     final BuildContext context = GlobalSingleton.navigatorKey.currentState!.context;
 
@@ -36,6 +53,12 @@ class NetworkInterceptor extends InterceptorsWrapper {
 
   @override
   Future<dynamic> onError(DioException err, ErrorInterceptorHandler handler) async {
+
+    // Handling if the API request path does not have to show a loader
+    final String path = err.requestOptions.path;
+    if (_pathsNotShowingLoader.contains(path)) {
+      return super.onError(err, handler);
+    }
 
     // Retrieve the current context from the navigator key
     final BuildContext context = GlobalSingleton.navigatorKey.currentState!.context;
