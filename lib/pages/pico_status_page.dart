@@ -227,19 +227,19 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         text: 'Recupero di calore',
         iconData: Icons.hot_tub,
         onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
-        selected: currentPicoState == PicoStateEnum.HEAT_RECOVERY,
+        selected:  deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.HEAT_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Estrazione',
         iconData: Icons.arrow_back,
         onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
-        selected: currentPicoState == PicoStateEnum.EXTRACTION,
+        selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Immissione',
         iconData: Icons.arrow_right_alt,
         onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
-        selected: currentPicoState == PicoStateEnum.IMMISSION,
+        selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.IMMISSION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá umiditá',
@@ -273,7 +273,8 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           }
 
         },
-        selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY ||
+        selected: deviceStatus.isDeviceOn &&
+            currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY ||
             currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
@@ -317,13 +318,15 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           }
 
         },
-        selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION ||
+        selected: deviceStatus.isDeviceOn &&
+            currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION ||
             currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Comfort',
         iconData: Icons.person,
-        selected: currentPicoState == PicoStateEnum.COMFORT_WINTER ||
+        selected: deviceStatus.isDeviceOn &&
+            currentPicoState == PicoStateEnum.COMFORT_WINTER ||
             currentPicoState == PicoStateEnum.COMFORT_SUMMER,
         onTap: () async {
 
@@ -359,12 +362,14 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         text: 'Ventilazione naturale',
         iconData: Icons.forest,
         onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
-        selected: currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
+        selected: deviceStatus.isDeviceOn &&
+            currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2',
         iconData: Icons.co2,
-        selected: currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY ||
+        selected: deviceStatus.isDeviceOn &&
+            currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY ||
             currentPicoState == PicoStateEnum.CO2_MODE_EXTRACTION,
         onTap: () async {
 
@@ -431,8 +436,21 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
               mainAxisSpacing: 16,
               shrinkWrap: true,
               children: items.map((InternalGridIconLabelCtaModel item) {
-                return GridIconLabelCtaItem(
-                  internalGridIconLabelCtaModel: item,
+                return GestureDetector(
+                  onTapUp: (TapUpDetails _) {
+                    if (!deviceStatus.isDeviceOn) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('VMC é SPENTO, accendilo prima di cambiare modalitá'),
+                        ),
+                      );
+                      return;
+                    }
+                  },
+                  child: GridIconLabelCtaItem(
+                    internalGridIconLabelCtaModel: item,
+                    isDeviceOn: item.isOnOffCta || deviceStatus.isDeviceOn,
+                  ),
                 );
               }).toList(),
             ),

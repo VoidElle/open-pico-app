@@ -20,6 +20,9 @@ abstract class InternalGridIconLabelCtaModel with _$InternalGridIconLabelCtaMode
     @Default(Colors.black)
     Color borderColor,
 
+    @Default(false)
+    bool isOnOffCta,
+
   }) = _InternalGridIconLabelCtaModel;
 
 }
