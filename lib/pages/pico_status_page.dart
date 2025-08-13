@@ -280,6 +280,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'ON / OFF',
         iconData: Icons.settings_remote,
+        isOnOffCta: true,
         onTap: () => _executeOnOffCommand(),
         selected: deviceStatus.isDeviceOn,
         borderColor: deviceStatus.isDeviceOn
@@ -438,7 +439,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
               children: items.map((InternalGridIconLabelCtaModel item) {
                 return GestureDetector(
                   onTapUp: (TapUpDetails _) {
-                    if (!deviceStatus.isDeviceOn) {
+                    if (!deviceStatus.isDeviceOn && !item.isOnOffCta) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('VMC é SPENTO, accendilo prima di cambiare modalitá'),

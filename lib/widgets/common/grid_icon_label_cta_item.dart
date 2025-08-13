@@ -16,7 +16,7 @@ class GridIconLabelCtaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: isDeviceOn
+      onTap: isDeviceOn || internalGridIconLabelCtaModel.isOnOffCta
           ? internalGridIconLabelCtaModel.onTap
           : null,
       borderRadius: BorderRadius.circular(8),
