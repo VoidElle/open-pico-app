@@ -27,6 +27,7 @@ class NetworkInterceptor extends InterceptorsWrapper {
     showDialog<LoadingDialog>(
       context: context,
       useSafeArea: false,
+      barrierDismissible: false,
       builder: (BuildContext context) => const LoadingDialog(),
     );
 
