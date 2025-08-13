@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_pico_app/dialogs/specific_pico_mode_selectable_dialog.dart';
 import 'package:open_pico_app/models/internal/internal_grid_icon_label_cta_model.dart';
 import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
@@ -10,6 +11,7 @@ import 'package:open_pico_app/use_cases/status/retrieve_device_status_usecase.da
 import 'package:open_pico_app/use_cases/utils/get_device_pin_usecase.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
 
+import '../models/internal/internal_specific_pico_mode_selectable_model.dart';
 import '../models/props/pico_status_page_props.dart';
 import '../models/responses/response_device_model.dart';
 import '../utils/enums/pico_state_enum.dart';
@@ -242,7 +244,37 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'Modalitá umiditá',
         iconData: Icons.heat_pump_sharp,
-        onTap: () {},
+        onTap: () async {
+
+          final PicoStateEnum? selectedPicoState = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SpecificPicoModeSelectableDialog(
+                internalSpecificPicoModeSelectableModelList: [
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_right_outlined,
+                    picoStateEnum: PicoStateEnum.HUMIDITY_MODE_RECOVERY,
+                    text: 'Recupero',
+                    selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY,
+                  ),
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_left_outlined,
+                    picoStateEnum: PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
+                    text: 'Estrazione',
+                    selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (selectedPicoState != null) {
+            _changePicoMode(selectedPicoState);
+          }
+
+        },
+        selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY ||
+            currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'ON / OFF',
@@ -256,12 +288,72 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2 / Umiditiá',
         iconData: Icons.heat_pump_rounded,
-        onTap: () {},
+        onTap: () async {
+
+          final PicoStateEnum? selectedPicoState = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SpecificPicoModeSelectableDialog(
+                internalSpecificPicoModeSelectableModelList: [
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_right_outlined,
+                    picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
+                    text: 'Recupero',
+                    selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
+                  ),
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_left_outlined,
+                    picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
+                    text: 'Estrazione',
+                    selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (selectedPicoState != null) {
+            _changePicoMode(selectedPicoState);
+          }
+
+        },
+        selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION ||
+            currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Comfort',
         iconData: Icons.person,
-        onTap: () {},
+        selected: currentPicoState == PicoStateEnum.COMFORT_WINTER ||
+            currentPicoState == PicoStateEnum.COMFORT_SUMMER,
+        onTap: () async {
+
+          final PicoStateEnum? selectedPicoState = await showDialog(
+            context:
+            context, builder: (BuildContext context) {
+              return SpecificPicoModeSelectableDialog(
+                internalSpecificPicoModeSelectableModelList: [
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_left_outlined,
+                    picoStateEnum: PicoStateEnum.COMFORT_WINTER,
+                    text: 'Inverno',
+                    selected: currentPicoState == PicoStateEnum.COMFORT_WINTER,
+                  ),
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_right_outlined,
+                    picoStateEnum: PicoStateEnum.COMFORT_SUMMER,
+                    text: 'Estate',
+                    selected: currentPicoState == PicoStateEnum.COMFORT_SUMMER,
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (selectedPicoState != null) {
+            _changePicoMode(selectedPicoState);
+          }
+
+        },
       ),
       InternalGridIconLabelCtaModel(
         text: 'Ventilazione naturale',
@@ -272,7 +364,37 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2',
         iconData: Icons.co2,
-        onTap: () {},
+        selected: currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY ||
+            currentPicoState == PicoStateEnum.CO2_MODE_EXTRACTION,
+        onTap: () async {
+
+          final PicoStateEnum? selectedPicoState = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SpecificPicoModeSelectableDialog(
+                internalSpecificPicoModeSelectableModelList: [
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_left_outlined,
+                    picoStateEnum: PicoStateEnum.CO2_MODE_RECOVERY,
+                    text: 'Recupero',
+                    selected: currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY,
+                  ),
+                  InternalSpecificPicoModeSelectableModel(
+                    icon: Icons.arrow_circle_right_outlined,
+                    picoStateEnum: PicoStateEnum.CO2_MODE_EXTRACTION,
+                    text: 'Estrazione',
+                    selected: currentPicoState == PicoStateEnum.EXTRACTION,
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (selectedPicoState != null) {
+            _changePicoMode(selectedPicoState);
+          }
+
+        },
       ),
     ];
 
