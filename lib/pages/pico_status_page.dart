@@ -337,13 +337,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
               return SpecificPicoModeSelectableDialog(
                 internalSpecificPicoModeSelectableModelList: [
                   InternalSpecificPicoModeSelectableModel(
-                    icon: Icons.arrow_circle_left_outlined,
+                    icon: Icons.severe_cold,
                     picoStateEnum: PicoStateEnum.COMFORT_WINTER,
                     text: 'Inverno',
                     selected: currentPicoState == PicoStateEnum.COMFORT_WINTER,
                   ),
                   InternalSpecificPicoModeSelectableModel(
-                    icon: Icons.arrow_circle_right_outlined,
+                    icon: Icons.local_fire_department_rounded,
                     picoStateEnum: PicoStateEnum.COMFORT_SUMMER,
                     text: 'Estate',
                     selected: currentPicoState == PicoStateEnum.COMFORT_SUMMER,
