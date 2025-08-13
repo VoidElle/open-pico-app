@@ -32,10 +32,15 @@ class PicoStatusPage extends ConsumerStatefulWidget {
 
 class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
+  // The following variables are used to manage the polling mechanism
   Timer? _pollingTimer;
   bool _isPolling = false;
   bool _isExecutingStatusUpdate = false;
+
+  // The current device status
   late DeviceStatus deviceStatus;
+
+  // The device pin, which is retrieved once and used for subsequent commands
   String? devicePin;
 
   @override
@@ -54,6 +59,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     super.dispose();
   }
 
+  // Function to initialize the polling mechanism
   Future<void> _initializePolling() async {
     try {
 
@@ -71,6 +77,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     }
   }
 
+  // Function to start the polling timer
   void _startPolling() {
 
     if (_isPolling || devicePin == null) {
@@ -93,6 +100,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     });
   }
 
+  // Function to stop the polling timer
   void _stopPolling() {
 
     _pollingTimer?.cancel();
@@ -102,6 +110,9 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     debugPrint('Stopped device status polling');
   }
 
+  // Function to update the device status
+  // This function will be called periodically to refresh the device status
+  // and update the UI accordingly
   Future<void> _updateDeviceStatus() async {
 
     if (!mounted || devicePin == null) {
@@ -134,6 +145,8 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     }
   }
 
+  // Function to change the Pico mode, this function will be called when
+  // the user taps on a specific mode
   Future<void> _changePicoMode(PicoStateEnum picoStateEnum) async {
     try {
 
@@ -191,10 +204,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       await ref
           .read(getExecuteChangeStatusCommandUsecaseProvider)
           .execute(
-        deviceStatus: deviceStatus,
-        responseDeviceModel: responseDeviceModel,
-        command: command,
-      );
+            deviceStatus: deviceStatus,
+            responseDeviceModel: responseDeviceModel,
+            command: command,
+          );
 
     } catch (e) {
       debugPrint('Error executing ON/OFF command: $e');
@@ -204,21 +217,27 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
   @override
   Widget build(BuildContext context) {
 
+    final int currentModToParse = deviceStatus.mod;
+    final PicoStateEnum currentPicoState = PicoStateEnumUtils.getPicoStateEnumFromMod(currentModToParse);
+
     final List<InternalGridIconLabelCtaModel> items = <InternalGridIconLabelCtaModel>[
       InternalGridIconLabelCtaModel(
         text: 'Recupero di calore',
         iconData: Icons.hot_tub,
         onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
+        selected: currentPicoState == PicoStateEnum.HEAT_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Estrazione',
         iconData: Icons.arrow_back,
         onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
+        selected: currentPicoState == PicoStateEnum.EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Immissione',
         iconData: Icons.arrow_right_alt,
         onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
+        selected: currentPicoState == PicoStateEnum.IMMISSION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá umiditá',
@@ -248,6 +267,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         text: 'Ventilazione naturale',
         iconData: Icons.forest,
         onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
+        selected: currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2',
