@@ -12,6 +12,7 @@ import 'package:open_pico_app/utils/command_utils.dart';
 
 import '../models/props/pico_status_page_props.dart';
 import '../models/responses/response_device_model.dart';
+import '../utils/enums/pico_state_enum.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
 class PicoStatusPage extends ConsumerStatefulWidget {
@@ -133,6 +134,39 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     }
   }
 
+  Future<void> _changePicoMode(PicoStateEnum picoStateEnum) async {
+    try {
+
+      final ResponseDeviceModel responseDeviceModel = widget
+          .picoStatusPageProps
+          .responseDeviceModel;
+
+      // Retrieve the device serial
+      final String deviceSerial = responseDeviceModel.serial;
+
+      // Retrieve the device pin
+      final String devicePin = await ref
+          .read(getGetDevicePinUsecaseProvider)
+          .execute(deviceSerial: deviceSerial);
+
+      // Retrieve the change mode command
+      final String command = CommandUtils
+          .getCmdFromPicoState(picoStateEnum, devicePin);
+
+      // Execute the command
+      await ref
+          .read(getExecuteChangeStatusCommandUsecaseProvider)
+          .execute(
+            deviceStatus: deviceStatus,
+            responseDeviceModel: responseDeviceModel,
+            command: command,
+          );
+
+    } catch (e) {
+      debugPrint('Error changing Pico mode: $e');
+    }
+  }
+
   // Function to execute the on / off command
   Future<void> _executeOnOffCommand() async {
     try {
@@ -174,17 +208,17 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'Recupero di calore',
         iconData: Icons.hot_tub,
-        onTap: () {},
+        onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
       ),
       InternalGridIconLabelCtaModel(
         text: 'Estrazione',
         iconData: Icons.arrow_back,
-        onTap: () {},
+        onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
       ),
       InternalGridIconLabelCtaModel(
         text: 'Immissione',
         iconData: Icons.arrow_right_alt,
-        onTap: () {},
+        onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá umiditá',
@@ -213,7 +247,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: 'Ventilazione naturale',
         iconData: Icons.forest,
-        onTap: () {},
+        onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
       ),
       InternalGridIconLabelCtaModel(
         text: 'Modalitá CO2',
