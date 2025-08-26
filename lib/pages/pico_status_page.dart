@@ -224,25 +224,25 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
     final List<InternalGridIconLabelCtaModel> items = <InternalGridIconLabelCtaModel>[
       InternalGridIconLabelCtaModel(
-        text: 'Recupero di calore',
+        text: 'Heat recovery',
         iconData: Icons.hot_tub,
         onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
         selected:  deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.HEAT_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Estrazione',
+        text: 'Extraction',
         iconData: Icons.arrow_back,
         onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Immissione',
+        text: 'Immission',
         iconData: Icons.arrow_right_alt,
         onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.IMMISSION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Modalitá umiditá',
+        text: 'Humidity mode',
         iconData: Icons.heat_pump_sharp,
         onTap: () async {
 
@@ -254,13 +254,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_MODE_RECOVERY,
-                    text: 'Recupero',
+                    text: 'Recovery',
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
-                    text: 'Estrazione',
+                    text: 'Extraction',
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
                   ),
                 ],
@@ -288,7 +288,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
             : Colors.red,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Modalitá CO2 / Umiditiá',
+        text: 'CO2 / Humidity Mode',
         iconData: Icons.heat_pump_rounded,
         onTap: () async {
 
@@ -300,13 +300,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
-                    text: 'Recupero',
+                    text: 'Recovery',
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
-                    text: 'Estrazione',
+                    text: 'Extraction',
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
                   ),
                 ],
@@ -339,13 +339,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.severe_cold,
                     picoStateEnum: PicoStateEnum.COMFORT_WINTER,
-                    text: 'Inverno',
+                    text: 'Winter',
                     selected: currentPicoState == PicoStateEnum.COMFORT_WINTER,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.local_fire_department_rounded,
                     picoStateEnum: PicoStateEnum.COMFORT_SUMMER,
-                    text: 'Estate',
+                    text: 'Summer',
                     selected: currentPicoState == PicoStateEnum.COMFORT_SUMMER,
                   ),
                 ],
@@ -360,14 +360,14 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         },
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Ventilazione naturale',
+        text: 'Natural ventilation',
         iconData: Icons.forest,
         onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Modalitá CO2',
+        text: 'CO2 mode',
         iconData: Icons.co2,
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY ||
@@ -382,13 +382,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.CO2_MODE_RECOVERY,
-                    text: 'Recupero',
+                    text: 'Recovery',
                     selected: currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.CO2_MODE_EXTRACTION,
-                    text: 'Estrazione',
+                    text: 'Extraction',
                     selected: currentPicoState == PicoStateEnum.EXTRACTION,
                   ),
                 ],
@@ -422,7 +422,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         children: [
 
           Text(
-            "VMC é attualmente ${deviceStatus.isDeviceOn ? "ACCESO" : "SPENTO"}",
+            "VMC is ${deviceStatus.isDeviceOn ? "ON" : "OFF"}",
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -442,7 +442,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                     if (!deviceStatus.isDeviceOn && !item.isOnOffCta) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('VMC é SPENTO, accendilo prima di cambiare modalitá'),
+                          content: Text('VMC is OFF, turn it on before changing modes'),
                         ),
                       );
                       return;

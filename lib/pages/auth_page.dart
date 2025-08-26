@@ -75,7 +75,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   // Widget to build the title
   Widget _buildTitle(BuildContext context) {
     return Text(
-      'Accedi al tuo account',
+      'Login to your account',
       style: Theme.of(context).textTheme.titleLarge,
     );
   }
@@ -94,7 +94,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 controller: ref.watch(authPageEmailControllerProvider),
                 decoration: const InputDecoration(
                   labelText: 'Username',
-                  hintText: 'Inserisci il tuo username',
+                  hintText: 'Your username',
                 ),
               ),
 
@@ -103,7 +103,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 controller: ref.watch(authPagePasswordControllerProvider),
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  hintText: 'Inserisci la tua password',
+                  hintText: 'Your password',
                   suffixIcon: IconButton(
                     icon: Icon(
                       _showPassword
