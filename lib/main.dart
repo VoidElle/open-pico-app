@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
@@ -10,6 +11,18 @@ import 'package:open_pico_app/utils/global_singleton.dart';
 import 'models/props/pico_status_page_props.dart';
 
 void main() {
+
+  // Ensure that the widgets are initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Dark icons on notifications top
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
 
   // Initialize the secure storage repository
   SecureStorageRepository.initialize();
