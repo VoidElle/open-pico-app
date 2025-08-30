@@ -4,6 +4,7 @@ import 'package:open_pico_app/models/responses/response_plant_model.dart';
 import 'package:open_pico_app/use_cases/status/device_details_tap_usecase.dart';
 import 'package:open_pico_app/utils/parsers/plants_responses_parser.dart';
 import 'package:open_pico_app/widgets/plants_list/plants_list_appbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../models/responses/response_device_model.dart';
 import '../models/responses/response_plant_model_wrapper_parsed.dart';
@@ -60,16 +61,21 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
         if (snapshot.hasError) {
           return Center(
             child: Text(
-              'Error: ${snapshot.error}',
+              tr(
+                "error_label",
+                args: [
+                  snapshot.error.toString(),
+                ],
+              ),
             ),
           );
         }
 
         // If the snapshot has no data or the data is empty, show a message
         if (!snapshot.hasData) {
-          return const Center(
+          return Center(
             child: Text(
-              'No devices found.',
+              tr("plants_list_page.no_devices_label"),
             ),
           );
         }
@@ -89,7 +95,7 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
                 title: Text(
                   plant.lvplName != null
                       ? "${plant.lvplName} (ID: ${plant.lvplUsanId ?? 'N/A'})"
-                      : 'Unknown Plant',
+                      : tr("plants_list_page.unknown_plant_label"),
                 ),
                 subtitle: _buildDevicesList(plant.devicesList),
               ),
@@ -106,7 +112,9 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
 
     // If the devices list is empty, return a message indicating no devices found
     if (devicesList.isEmpty) {
-      return const Text('No devices found for this plant.');
+      return Text(
+        tr("plants_list_page.no_devices_in_plant_label")
+      );
     }
 
     return Padding(

@@ -10,6 +10,7 @@ import 'package:open_pico_app/use_cases/status/execute_change_status_command_use
 import 'package:open_pico_app/use_cases/status/retrieve_device_status_usecase.dart';
 import 'package:open_pico_app/use_cases/utils/get_device_pin_usecase.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../models/internal/internal_specific_pico_mode_selectable_model.dart';
 import '../models/props/pico_status_page_props.dart';
@@ -224,25 +225,25 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
     final List<InternalGridIconLabelCtaModel> items = <InternalGridIconLabelCtaModel>[
       InternalGridIconLabelCtaModel(
-        text: 'Heat recovery',
+        text: tr("plant_detail.heat_recovery_label"),
         iconData: Icons.hot_tub,
         onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
         selected:  deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.HEAT_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Extraction',
+        text: tr("plant_detail.extraction_label"),
         iconData: Icons.arrow_back,
         onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Immission',
+        text: tr("plant_detail.immission_label"),
         iconData: Icons.arrow_right_alt,
         onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.IMMISSION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Humidity mode',
+        text: tr("plant_detail.humidity_mode_label"),
         iconData: Icons.heat_pump_sharp,
         onTap: () async {
 
@@ -254,13 +255,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_MODE_RECOVERY,
-                    text: 'Recovery',
+                    text: tr("global.recovery_label"),
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
-                    text: 'Extraction',
+                    text: tr("global.extraction_label"),
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
                   ),
                 ],
@@ -278,7 +279,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
             currentPicoState == PicoStateEnum.HUMIDITY_MODE_EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'ON / OFF',
+        text: tr("plant_detail.on_off_label"),
         iconData: Icons.settings_remote,
         isOnOffCta: true,
         onTap: () => _executeOnOffCommand(),
@@ -288,7 +289,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
             : Colors.red,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'CO2 / Humidity Mode',
+        text: tr("plant_detail.co2_humidity_mode_label"),
         iconData: Icons.heat_pump_rounded,
         onTap: () async {
 
@@ -300,13 +301,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
-                    text: 'Recovery',
+                    text: tr("global.recovery_label"),
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
-                    text: 'Extraction',
+                    text: tr("global.extraction_label"),
                     selected: currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_EXTRACTION,
                   ),
                 ],
@@ -324,7 +325,7 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
             currentPicoState == PicoStateEnum.HUMIDITY_CO2_MODE_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Comfort',
+        text: tr("plant_detail.comfort_mode_label"),
         iconData: Icons.person,
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.COMFORT_WINTER ||
@@ -339,13 +340,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.severe_cold,
                     picoStateEnum: PicoStateEnum.COMFORT_WINTER,
-                    text: 'Winter',
+                    text: tr("global.winter_label"),
                     selected: currentPicoState == PicoStateEnum.COMFORT_WINTER,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.local_fire_department_rounded,
                     picoStateEnum: PicoStateEnum.COMFORT_SUMMER,
-                    text: 'Summer',
+                    text: tr("global.summer_label"),
                     selected: currentPicoState == PicoStateEnum.COMFORT_SUMMER,
                   ),
                 ],
@@ -360,14 +361,14 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         },
       ),
       InternalGridIconLabelCtaModel(
-        text: 'Natural ventilation',
+        text: tr("plant_detail.natural_ventilation_label"),
         iconData: Icons.forest,
         onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
       ),
       InternalGridIconLabelCtaModel(
-        text: 'CO2 mode',
+        text: tr("plant_detail.co2_mode"),
         iconData: Icons.co2,
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY ||
@@ -382,13 +383,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_left_outlined,
                     picoStateEnum: PicoStateEnum.CO2_MODE_RECOVERY,
-                    text: 'Recovery',
+                    text: tr("global.recovery_label"),
                     selected: currentPicoState == PicoStateEnum.CO2_MODE_RECOVERY,
                   ),
                   InternalSpecificPicoModeSelectableModel(
                     icon: Icons.arrow_circle_right_outlined,
                     picoStateEnum: PicoStateEnum.CO2_MODE_EXTRACTION,
-                    text: 'Extraction',
+                    text: tr("global.extraction_label"),
                     selected: currentPicoState == PicoStateEnum.EXTRACTION,
                   ),
                 ],
@@ -422,7 +423,14 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         children: [
 
           Text(
-            "VMC is ${deviceStatus.isDeviceOn ? "ON" : "OFF"}",
+            tr(
+              "plant_detail.on_off_status_placeholder",
+              args: [
+                deviceStatus.isDeviceOn
+                    ? "ON"
+                    : "OFF",
+              ],
+            ),
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -441,8 +449,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
                   onTapUp: (TapUpDetails _) {
                     if (!deviceStatus.isDeviceOn && !item.isOnOffCta) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('VMC is OFF, turn it on before changing modes'),
+                        SnackBar(
+                          content: Text(
+                            tr("plant_detail.set_mode_while_off_error"),
+                          ),
                         ),
                       );
                       return;

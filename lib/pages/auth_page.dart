@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_pico_app/repositories/secure_storage_repository.dart';
 import 'package:open_pico_app/use_cases/secure_storage/secure_storage_write_read_login_data_usecase.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../use_cases/network/executor/login_use_case.dart';
 import '../providers/pages/auth_page_providers.dart';
@@ -75,7 +76,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   // Widget to build the title
   Widget _buildTitle(BuildContext context) {
     return Text(
-      'Login to your account',
+      tr("login_page.title"),
       style: Theme.of(context).textTheme.titleLarge,
     );
   }
@@ -92,9 +93,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               // Username form field
               TextFormField(
                 controller: ref.watch(authPageEmailControllerProvider),
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  hintText: 'Your username',
+                decoration: InputDecoration(
+                  labelText: tr("login_page.username.placeholder"),
+                  hintText: tr("login_page.username.hint"),
                 ),
               ),
 
@@ -102,8 +103,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               TextFormField(
                 controller: ref.watch(authPagePasswordControllerProvider),
                 decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Your password',
+                  labelText: tr("login_page.password.placeholder"),
+                  hintText: tr("login_page.password.hint"),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _showPassword
@@ -128,7 +129,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       });
                     },
                   ),
-                  const Text('Salva password'),
+                  Text(
+                    tr("login_page.save_password_checkbox_label"),
+                  ),
                 ],
               ),
 
@@ -142,7 +145,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       savePassword: _savePassword
                     );
                   },
-                  child: const Text('Submit'),
+                  child: Text(
+                    tr("login_page.submit_button_label"),
+                  ),
                 ),
               ),
 

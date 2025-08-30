@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,14 +8,19 @@ import 'package:open_pico_app/pages/auth_page.dart';
 import 'package:open_pico_app/pages/pico_status_page.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
 import 'package:open_pico_app/repositories/secure_storage_repository.dart';
+import 'package:open_pico_app/utils/constants/translations_constants.dart';
 import 'package:open_pico_app/utils/global_singleton.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'models/props/pico_status_page_props.dart';
 
-void main() {
+Future<void> main() async {
 
   // Ensure that the widgets are initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the localizations
+  await EasyLocalization.ensureInitialized();
 
   // Dark icons on notifications top
   SystemChrome.setSystemUIOverlayStyle(
@@ -27,9 +34,15 @@ void main() {
   // Initialize the secure storage repository
   SecureStorageRepository.initialize();
 
+  // runApp with localization and Riverpod handling
   runApp(
-    ProviderScope(
-      child: const OpenPico(),
+    EasyLocalization(
+        supportedLocales: TranslationsConstants.supportedLocales,
+        path: TranslationsConstants.localizationPath,
+        fallbackLocale: TranslationsConstants.fallbackLocale,
+        child: ProviderScope(
+          child: const OpenPico(),
+        ),
     ),
   );
 }
@@ -64,6 +77,9 @@ class OpenPico extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Open Pico',
       routerConfig: _router,
       theme: ThemeData(

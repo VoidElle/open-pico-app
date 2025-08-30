@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class InputPinDialog {
 
@@ -12,7 +13,9 @@ class InputPinDialog {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Enter PIN'),
+          title: Text(
+            tr("input_pin_modal.title"),
+          ),
           content: Form(
             key: formKey,
             child: Column(
@@ -23,13 +26,13 @@ class InputPinDialog {
                 TextFormField(
                   controller: pinController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'PIN',
+                  decoration: InputDecoration(
+                    labelText: tr("input_pin_modal.label"),
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your PIN';
+                      return tr("input_pin_modal.enter_pin_label");
                     }
                     return null;
                   },
@@ -39,7 +42,7 @@ class InputPinDialog {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Invalid PIN. Please try again.',
+                      tr("input_pin_modal.pin_invalid_label"),
                       style: TextStyle(
                         color: Colors.red,
                       ),
@@ -52,7 +55,9 @@ class InputPinDialog {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(null),
-              child: const Text('Cancel'),
+              child: Text(
+                tr("input_pin_modal.cancel_button"),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -60,7 +65,9 @@ class InputPinDialog {
                   Navigator.of(context).pop(pinController.text);
                 }
               },
-              child: const Text('Confirm'),
+              child: Text(
+                tr("input_pin_modal.confirm_button"),
+              ),
             ),
 
           ],

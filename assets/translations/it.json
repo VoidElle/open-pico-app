@@ -1,0 +1,50 @@
+{
+  "global": {
+    "recovery_label": "Recupero",
+    "extraction_label": "Estrazione",
+    "winter_label": "Inverno",
+    "summer_label": "Estate"
+  },
+  "login_page": {
+    "title": "Accedi al tuo account",
+    "username": {
+      "placeholder": "Username",
+      "hint": "Il tuo username"
+    },
+    "password": {
+      "placeholder": "Password",
+      "hint": "La tua password"
+    },
+    "save_password_checkbox_label": "Resta connesso",
+    "submit_button_label": "Accedi"
+  },
+  "plants_list_page": {
+    "header_title": "Lista degli impianti",
+    "actions_logout": "Esci",
+    "no_devices_label": "Nessun dispositivo trovato.",
+    "no_devices_in_plant_label": "Nessun dispositivo trovato in questo impianto.",
+    "error_label": "Errore {}",
+    "unknown_plant_label": "Impianto sconosciuto"
+  },
+  "input_pin_modal": {
+    "title": "Inserisci PIN",
+    "label": "PIN",
+    "enter_pin_label": "Inserisci il PIN",
+    "pin_invalid_label": "PIN non valido. Riprova.",
+    "cancel_button": "Annulla",
+    "confirm_button": "Conferma"
+  },
+  "plant_detail": {
+    "on_off_status_placeholder": "Il VMC é {}",
+    "heat_recovery_label": "Recupero di calore",
+    "extraction_label": "Estrazione",
+    "immission_label": "Immissione",
+    "humidity_mode_label": "Modalitá umiditá",
+    "on_off_label": "ON / OFF",
+    "co2_humidity_mode_label": "Modalitá CO₂ / umiditá",
+    "comfort_mode_label": "Comfort",
+    "natural_ventilation_label": "Ventilazione naturale",
+    "co2_mode": "Modalitá CO₂",
+    "set_mode_while_off_error": "VMC é OFF, accendilo prima di cambiare la modalitá"
+  }
+}

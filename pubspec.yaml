@@ -56,10 +56,14 @@ dev_dependencies:
   riverpod_generator: ^2.6.5
   flutter_launcher_icons: ^0.14.4
 
+  # Localization
+  easy_localization: ^3.0.8
+
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/translations/
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -1,0 +1,50 @@
+{
+  "global": {
+    "recovery_label": "Recovery",
+    "extraction_label": "Extraction",
+    "winter_label": "Winter",
+    "summer_label": "Summer"
+  },
+  "login_page": {
+    "title": "Login to your account",
+    "username": {
+      "placeholder": "Username",
+      "hint": "Your username"
+    },
+    "password": {
+      "placeholder": "Password",
+      "hint": "Your password"
+    },
+    "save_password_checkbox_label": "Keep me logged in",
+    "submit_button_label": "Login"
+  },
+  "plants_list_page": {
+    "header_title": "Plants list",
+    "actions_logout": "Logout",
+    "no_devices_label": "No devices found.",
+    "no_devices_in_plant_label": "No devices found for this plant.",
+    "error_label": "Error {}",
+    "unknown_plant_label": "Unknown plant"
+  },
+  "input_pin_modal": {
+    "title": "Enter PIN",
+    "label": "PIN",
+    "enter_pin_label": "Please enter your PIN",
+    "pin_invalid_label": "Invalid PIN. Please try again.",
+    "cancel_button": "Cancel",
+    "confirm_button": "Confirm"
+  },
+  "plant_detail": {
+    "on_off_status_placeholder": "VMC is {}",
+    "heat_recovery_label": "Heat recovery",
+    "extraction_label": "Extraction",
+    "immission_label": "Immission",
+    "humidity_mode_label": "Humidity mode",
+    "on_off_label": "ON / OFF",
+    "co2_humidity_mode_label": "CO₂ / Humidity mode",
+    "comfort_mode_label": "Comfort",
+    "natural_ventilation_label": "Natural ventilation",
+    "co2_mode": "CO₂ mode",
+    "set_mode_while_off_error": "VMC is OFF, turn it on before changing modes"
+  }
+}
