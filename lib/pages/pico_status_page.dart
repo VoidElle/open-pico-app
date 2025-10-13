@@ -6,6 +6,7 @@ import 'package:open_pico_app/dialogs/specific_pico_mode_selectable_dialog.dart'
 import 'package:open_pico_app/models/internal/internal_grid_icon_label_cta_model.dart';
 import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
+import 'package:open_pico_app/providers/global/global_providers.dart';
 import 'package:open_pico_app/use_cases/status/retrieve_device_status_usecase.dart';
 import 'package:open_pico_app/use_cases/utils/get_device_pin_usecase.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
@@ -178,9 +179,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           .read(getGetDevicePinUsecaseProvider)
           .execute(deviceSerial: deviceSerial);
 
+      // Retrieve the global idp counter
+      final int idpCounter = await ref
+          .read(globalIdpCounterRepositoryProvider);
+
       // Retrieve the change mode command
       final String command = CommandUtils
-          .getCmdFromPicoState(picoStateEnum, devicePin);
+          .getCmdFromPicoState(idpCounter, picoStateEnum, devicePin);
 
       // Execute the command
       await ref
@@ -212,9 +217,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           .read(getGetDevicePinUsecaseProvider)
           .execute(deviceSerial: deviceSerial);
 
+      // Retrieve the global idp counter
+      final int idpCounter = await ref
+          .read(globalIdpCounterRepositoryProvider);
+
       // Retrieve the command ON or OFF
       final String command = CommandUtils
-          .getOnOffCmd(!deviceStatus.isDeviceOn, devicePin);
+          .getOnOffCmd(idpCounter, !deviceStatus.isDeviceOn, devicePin);
 
       // Execute the command
       await ref
@@ -245,9 +254,13 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           .read(getGetDevicePinUsecaseProvider)
           .execute(deviceSerial: deviceSerial);
 
+      // Retrieve the global idp counter
+      final int idpCounter = await ref
+          .read(globalIdpCounterRepositoryProvider);
+
       // Retrieve the command to change the fan speed
       final String command = CommandUtils
-          .getSetSpeedCmd(newFanSpeed, devicePin);
+          .getSetSpeedCmd(idpCounter, newFanSpeed, devicePin);
 
       // Execute the command
       await ref

@@ -55,6 +55,9 @@ class PicoExecuteCommandUsecase {
         .read(picoRestClientProvider)
         .executeCommand(newToken, authorization, deviceSerial, devicePin, requestCommandModel);
 
+    // Increment the IDP counter after the request
+    ref.read(globalIdpCounterRepositoryProvider.notifier).increment();
+
     return deviceStatusResponse;
   }
 

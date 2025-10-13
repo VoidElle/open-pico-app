@@ -23,3 +23,14 @@ class GlobalSecureStorageRepository extends _$GlobalSecureStorageRepository {
   GlobalSecureStorageRepository build() => GlobalSecureStorageRepository();
 
 }
+
+@Riverpod(keepAlive: true)
+class GlobalIdpCounterRepository extends _$GlobalIdpCounterRepository {
+
+  @override
+  int build() => 0;
+
+  void set(int newValue) => state = newValue;
+  void reset() => state = 0;
+  void increment() => state++;
+}
