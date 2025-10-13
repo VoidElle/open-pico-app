@@ -6,7 +6,6 @@ import 'package:open_pico_app/dialogs/specific_pico_mode_selectable_dialog.dart'
 import 'package:open_pico_app/models/internal/internal_grid_icon_label_cta_model.dart';
 import 'package:open_pico_app/models/responses/device_status.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
-import 'package:open_pico_app/use_cases/status/execute_change_status_command_usecase.dart';
 import 'package:open_pico_app/use_cases/status/retrieve_device_status_usecase.dart';
 import 'package:open_pico_app/use_cases/utils/get_device_pin_usecase.dart';
 import 'package:open_pico_app/utils/command_utils.dart';
@@ -15,6 +14,8 @@ import 'package:easy_localization/easy_localization.dart';
 import '../models/internal/internal_specific_pico_mode_selectable_model.dart';
 import '../models/props/pico_status_page_props.dart';
 import '../models/responses/response_device_model.dart';
+import '../use_cases/pico/pico_execute_command_usecase.dart';
+import '../utils/constants/supported_modes_constants.dart';
 import '../utils/enums/pico_state_enum.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
@@ -46,19 +47,28 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
   // The device pin, which is retrieved once and used for subsequent commands
   String? devicePin;
 
+  // The fan speed of the slider
+  late int _fanSpeed;
+
+  // Add debounce timer for fan speed
+  Timer? _fanSpeedDebounceTimer;
+  static const Duration _fanSpeedDebounceDuration = Duration(milliseconds: 500);
+
   @override
   void initState() {
 
     super.initState();
 
     deviceStatus = widget.picoStatusPageProps.deviceStatus;
-    _initializePolling();
+    _fanSpeed = deviceStatus.spdRich;
 
+    _initializePolling();
   }
 
   @override
   void dispose() {
     _stopPolling();
+    _fanSpeedDebounceTimer?.cancel();
     super.dispose();
   }
 
@@ -138,7 +148,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
       // Update the state only if widget is still mounted
       if (mounted) {
-        setState(() => deviceStatus = updatedDeviceStatus);
+        setState(() {
+          deviceStatus = updatedDeviceStatus;
+          _fanSpeed = updatedDeviceStatus.spdRich;
+        });
       }
 
     } catch (e) {
@@ -171,10 +184,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
       // Execute the command
       await ref
-          .read(getExecuteChangeStatusCommandUsecaseProvider)
+          .read(getPicoExecuteCommandUsecaseProvider)
           .execute(
-            deviceStatus: deviceStatus,
-            responseDeviceModel: responseDeviceModel,
+            deviceName: deviceStatus.name,
+            deviceSerial: responseDeviceModel.serial,
             command: command,
           );
 
@@ -205,16 +218,66 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
 
       // Execute the command
       await ref
-          .read(getExecuteChangeStatusCommandUsecaseProvider)
+          .read(getPicoExecuteCommandUsecaseProvider)
           .execute(
-            deviceStatus: deviceStatus,
-            responseDeviceModel: responseDeviceModel,
+            deviceName: deviceStatus.name,
+            deviceSerial: responseDeviceModel.serial,
             command: command,
           );
 
     } catch (e) {
       debugPrint('Error executing ON/OFF command: $e');
     }
+  }
+
+  Future<void> _changeFanSpeed(int newFanSpeed) async {
+    try {
+
+      final ResponseDeviceModel responseDeviceModel = widget
+          .picoStatusPageProps
+          .responseDeviceModel;
+
+      // Retrieve the device serial
+      final String deviceSerial = responseDeviceModel.serial;
+
+      // Retrieve the device pin
+      final String devicePin = await ref
+          .read(getGetDevicePinUsecaseProvider)
+          .execute(deviceSerial: deviceSerial);
+
+      // Retrieve the command to change the fan speed
+      final String command = CommandUtils
+          .getSetSpeedCmd(newFanSpeed, devicePin);
+
+      // Execute the command
+      await ref
+          .read(getPicoExecuteCommandUsecaseProvider)
+          .execute(
+            deviceName: deviceStatus.name,
+            deviceSerial: responseDeviceModel.serial,
+            command: command,
+          );
+
+    } catch (e) {
+      debugPrint('Error changing fan speed: $e');
+    }
+  }
+
+  // Debounced fan speed change handler
+  void _onFanSpeedChanged(int newFanSpeed) {
+    // Cancel previous timer if it exists
+    _fanSpeedDebounceTimer?.cancel();
+
+    // Optimistic update of the UI
+    setState(() {
+      _fanSpeed = newFanSpeed;
+    });
+
+    // Set up a new timer
+    _fanSpeedDebounceTimer = Timer(_fanSpeedDebounceDuration, () {
+      /// This will only execute after the user stops sliding for [_fanSpeedDebounceDuration]ms
+      _changeFanSpeed(_fanSpeed);
+    });
   }
 
   @override
@@ -467,8 +530,39 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
             ),
           ),
 
+          if (SupportedModesConstants.fanSpeedSupportedPresetModes.contains(currentPicoState))
+            _buildFanSpeedWidget(),
+
         ],
       ),
     );
   }
+
+  Widget _buildFanSpeedWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Fan speed",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Slider(
+          value: _fanSpeed.toDouble(),
+          min: 0,
+          max: 100,
+          onChanged: (double newValue) => _onFanSpeedChanged(newValue.toInt()),
+        ),
+        Text(
+          "${_fanSpeed.toInt()}%",
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+        )
+      ],
+    );
+  }
+
 }

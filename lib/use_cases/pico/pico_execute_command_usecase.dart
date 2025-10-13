@@ -6,9 +6,11 @@ import '../../models/requests/request_command_model.dart';
 import '../../models/responses/common_response_wrapper.dart';
 import '../../providers/global/global_providers.dart';
 import '../../providers/global/global_rest_client_providers.dart';
+import '../../repositories/secure_storage_repository.dart';
 import '../../utils/aes_crypt.dart';
 import '../../utils/constants/network_constants.dart';
 import '../network/core/network_handler.dart';
+import '../secure_storage/secure_storage_write_read_device_pin_usecase.dart';
 
 part 'generated/pico_execute_command_usecase.g.dart';
 
@@ -20,11 +22,17 @@ class PicoExecuteCommandUsecase {
   PicoExecuteCommandUsecase(this.ref, this.dio);
 
   Future<CommonResponseWrapper> execute({
-    required String command,
     required String deviceName,
-    required String devicePin,
     required String deviceSerial,
+    required String command,
   }) async {
+
+    // Retrieve the PIN from the Secure Storage
+    final SecureStorageWriteReadDevicePinUsecase secureStorageWriteReadDevicePinUsecase = SecureStorageWriteReadDevicePinUsecase(SecureStorageRepository.instance);
+    final Map<String, dynamic> data = await secureStorageWriteReadDevicePinUsecase.readData(deviceSerial);
+
+    // Get the PIN from the retrieved data
+    final String devicePin = data['pin'];
 
     // Create the request model to send
     final RequestCommandModel requestCommandModel = RequestCommandModel(
