@@ -17,6 +17,7 @@ import '../models/props/pico_status_page_props.dart';
 import '../models/responses/response_device_model.dart';
 import '../use_cases/pico/pico_execute_command_usecase.dart';
 import '../utils/constants/supported_modes_constants.dart';
+import '../utils/enums/pico_command_type_enum.dart';
 import '../utils/enums/pico_state_enum.dart';
 import '../widgets/common/grid_icon_label_cta_item.dart';
 
@@ -162,9 +163,11 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     }
   }
 
-  // Function to change the Pico mode, this function will be called when
-  // the user taps on a specific mode
-  Future<void> _changePicoMode(PicoStateEnum picoStateEnum) async {
+  Future<void> _executeCommand({
+    required PicoCommandTypeEnum commandType,
+    PicoStateEnum? picoStateEnum,
+    int? newFanSpeed,
+  }) async {
     try {
 
       final ResponseDeviceModel responseDeviceModel = widget
@@ -183,96 +186,36 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       final int idpCounter = await ref
           .read(globalIdpCounterRepositoryProvider);
 
-      // Retrieve the change mode command
-      final String command = CommandUtils
-          .getCmdFromPicoState(idpCounter, picoStateEnum, devicePin);
+      late String command;
+      switch (commandType) {
+        case PicoCommandTypeEnum.CHANGE_MODE:
+          if (picoStateEnum == null) {
+            throw ArgumentError('picoStateEnum must be provided for CHANGE_MODE command');
+          }
+          command = CommandUtils.getCmdFromPicoState(idpCounter, picoStateEnum, devicePin);
+        case PicoCommandTypeEnum.ON_OFF:
+          command = CommandUtils.getOnOffCmd(idpCounter, !deviceStatus.isDeviceOn, devicePin);
+        case PicoCommandTypeEnum.CHANGE_FAN_SPEED:
+          if (newFanSpeed == null) {
+            throw ArgumentError('newFanSpeed must be provided for CHANGE_FAN_SPEED command');
+          }
+          command = CommandUtils.getSetSpeedCmd(idpCounter, newFanSpeed, devicePin);
+        case PicoCommandTypeEnum.CHANGE_TARGET_HUMIDITY:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+      }
 
       // Execute the command
       await ref
           .read(getPicoExecuteCommandUsecaseProvider)
           .execute(
-            deviceName: deviceStatus.name,
-            deviceSerial: responseDeviceModel.serial,
-            command: command,
-          );
-
-    } catch (e) {
-      debugPrint('Error changing Pico mode: $e');
-    }
-  }
-
-  // Function to execute the on / off command
-  Future<void> _executeOnOffCommand() async {
-    try {
-
-      final ResponseDeviceModel responseDeviceModel = widget
-          .picoStatusPageProps
-          .responseDeviceModel;
-
-      // Retrieve the device serial
-      final String deviceSerial = responseDeviceModel.serial;
-
-      // Retrieve the device pin
-      final String devicePin = await ref
-          .read(getGetDevicePinUsecaseProvider)
-          .execute(deviceSerial: deviceSerial);
-
-      // Retrieve the global idp counter
-      final int idpCounter = await ref
-          .read(globalIdpCounterRepositoryProvider);
-
-      // Retrieve the command ON or OFF
-      final String command = CommandUtils
-          .getOnOffCmd(idpCounter, !deviceStatus.isDeviceOn, devicePin);
-
-      // Execute the command
-      await ref
-          .read(getPicoExecuteCommandUsecaseProvider)
-          .execute(
-            deviceName: deviceStatus.name,
-            deviceSerial: responseDeviceModel.serial,
-            command: command,
-          );
+        deviceName: deviceStatus.name,
+        deviceSerial: responseDeviceModel.serial,
+        command: command,
+      );
 
     } catch (e) {
       debugPrint('Error executing ON/OFF command: $e');
-    }
-  }
-
-  Future<void> _changeFanSpeed(int newFanSpeed) async {
-    try {
-
-      final ResponseDeviceModel responseDeviceModel = widget
-          .picoStatusPageProps
-          .responseDeviceModel;
-
-      // Retrieve the device serial
-      final String deviceSerial = responseDeviceModel.serial;
-
-      // Retrieve the device pin
-      final String devicePin = await ref
-          .read(getGetDevicePinUsecaseProvider)
-          .execute(deviceSerial: deviceSerial);
-
-      // Retrieve the global idp counter
-      final int idpCounter = await ref
-          .read(globalIdpCounterRepositoryProvider);
-
-      // Retrieve the command to change the fan speed
-      final String command = CommandUtils
-          .getSetSpeedCmd(idpCounter, newFanSpeed, devicePin);
-
-      // Execute the command
-      await ref
-          .read(getPicoExecuteCommandUsecaseProvider)
-          .execute(
-            deviceName: deviceStatus.name,
-            deviceSerial: responseDeviceModel.serial,
-            command: command,
-          );
-
-    } catch (e) {
-      debugPrint('Error changing fan speed: $e');
     }
   }
 
@@ -289,7 +232,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     // Set up a new timer
     _fanSpeedDebounceTimer = Timer(_fanSpeedDebounceDuration, () {
       /// This will only execute after the user stops sliding for [_fanSpeedDebounceDuration]ms
-      _changeFanSpeed(_fanSpeed);
+      _executeCommand(
+        commandType: PicoCommandTypeEnum.CHANGE_FAN_SPEED,
+        newFanSpeed: _fanSpeed,
+      );
     });
   }
 
@@ -303,19 +249,28 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: tr("plant_detail.heat_recovery_label"),
         iconData: Icons.hot_tub,
-        onTap: () => _changePicoMode(PicoStateEnum.HEAT_RECOVERY),
+        onTap: () => _executeCommand(
+          commandType: PicoCommandTypeEnum.CHANGE_MODE,
+          picoStateEnum: PicoStateEnum.HEAT_RECOVERY,
+        ),
         selected:  deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.HEAT_RECOVERY,
       ),
       InternalGridIconLabelCtaModel(
         text: tr("plant_detail.extraction_label"),
         iconData: Icons.arrow_back,
-        onTap: () => _changePicoMode(PicoStateEnum.EXTRACTION),
+        onTap: () => _executeCommand(
+          commandType: PicoCommandTypeEnum.CHANGE_MODE,
+          picoStateEnum: PicoStateEnum.EXTRACTION,
+        ),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.EXTRACTION,
       ),
       InternalGridIconLabelCtaModel(
         text: tr("plant_detail.immission_label"),
         iconData: Icons.arrow_right_alt,
-        onTap: () => _changePicoMode(PicoStateEnum.IMMISSION),
+        onTap: () => _executeCommand(
+          commandType: PicoCommandTypeEnum.CHANGE_MODE,
+          picoStateEnum: PicoStateEnum.IMMISSION,
+        ),
         selected: deviceStatus.isDeviceOn && currentPicoState == PicoStateEnum.IMMISSION,
       ),
       InternalGridIconLabelCtaModel(
@@ -346,7 +301,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           );
 
           if (selectedPicoState != null) {
-            _changePicoMode(selectedPicoState);
+            _executeCommand(
+              commandType: PicoCommandTypeEnum.CHANGE_MODE,
+              picoStateEnum: selectedPicoState,
+            );
           }
 
         },
@@ -358,7 +316,9 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
         text: tr("plant_detail.on_off_label"),
         iconData: Icons.settings_remote,
         isOnOffCta: true,
-        onTap: () => _executeOnOffCommand(),
+        onTap: () => _executeCommand(
+          commandType: PicoCommandTypeEnum.ON_OFF,
+        ),
         selected: deviceStatus.isDeviceOn,
         borderColor: deviceStatus.isDeviceOn
             ? Colors.green
@@ -392,7 +352,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           );
 
           if (selectedPicoState != null) {
-            _changePicoMode(selectedPicoState);
+            _executeCommand(
+              commandType: PicoCommandTypeEnum.CHANGE_MODE,
+              picoStateEnum: selectedPicoState,
+            );
           }
 
         },
@@ -431,7 +394,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           );
 
           if (selectedPicoState != null) {
-            _changePicoMode(selectedPicoState);
+            _executeCommand(
+              commandType: PicoCommandTypeEnum.CHANGE_MODE,
+              picoStateEnum: selectedPicoState,
+            );
           }
 
         },
@@ -439,7 +405,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
       InternalGridIconLabelCtaModel(
         text: tr("plant_detail.natural_ventilation_label"),
         iconData: Icons.forest,
-        onTap: () => _changePicoMode(PicoStateEnum.NATURAL_VENTILATION),
+        onTap: () => _executeCommand(
+          commandType: PicoCommandTypeEnum.CHANGE_MODE,
+          picoStateEnum: PicoStateEnum.NATURAL_VENTILATION,
+        ),
         selected: deviceStatus.isDeviceOn &&
             currentPicoState == PicoStateEnum.NATURAL_VENTILATION,
       ),
@@ -474,7 +443,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           );
 
           if (selectedPicoState != null) {
-            _changePicoMode(selectedPicoState);
+            _executeCommand(
+              commandType: PicoCommandTypeEnum.CHANGE_MODE,
+              picoStateEnum: selectedPicoState,
+            );
           }
 
         },
@@ -546,6 +518,9 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           if (SupportedModesConstants.fanSpeedSupportedPresetModes.contains(currentPicoState))
             _buildFanSpeedWidget(),
 
+          if (SupportedModesConstants.humiditySelectSupportedPresetModes.contains(currentPicoState))
+            _buildHumidityTargetWidget(),
+
         ],
       ),
     );
@@ -575,6 +550,42 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _buildHumidityTargetWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildHumidityTargetContainer(40, deviceStatus.sUmd == 1),
+        const SizedBox(width: 16),
+        _buildHumidityTargetContainer(50, deviceStatus.sUmd == 2),
+        const SizedBox(width: 16),
+        _buildHumidityTargetContainer(60, deviceStatus.sUmd == 3),
+      ],
+    );
+  }
+
+  Widget _buildHumidityTargetContainer(int target, bool selected) {
+    return GestureDetector(
+      onTap: () async {
+
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: selected ? Colors.lightBlue : Colors.grey[300],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          "$target%",
+          style: TextStyle(
+            color: selected ? Colors.black : Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 

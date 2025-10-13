@@ -1,0 +1,6 @@
+enum PicoCommandTypeEnum {
+  CHANGE_MODE,
+  ON_OFF,
+  CHANGE_FAN_SPEED,
+  CHANGE_TARGET_HUMIDITY,
+}
