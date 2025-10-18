@@ -18,4 +18,9 @@ class CommandUtils {
     return "{\"spd_row\":${speed},\"speed\":0,\"cmd\":\"upd_pico\",\"frm\":\"mqtt\",\"idp\":${idpCounter},\"pin\":\"${pin}\"}";
   }
 
+  // Retrieve the command to set the target humidity
+  static String getSetTargetHumidityCmd(int idpCounter, int newSUmd, String pin) {
+    return "{\"s_umd\":${newSUmd},\"cmd\":\"upd_pico\",\"frm\":\"mqtt\",\"idp\":${idpCounter},\"pin\":\"${pin}\"}";
+  }
+
 }

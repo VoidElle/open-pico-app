@@ -163,10 +163,12 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     }
   }
 
+  // Function to execute a command on the device
   Future<void> _executeCommand({
     required PicoCommandTypeEnum commandType,
     PicoStateEnum? picoStateEnum,
     int? newFanSpeed,
+    int? newSUmd,
   }) async {
     try {
 
@@ -201,8 +203,10 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
           }
           command = CommandUtils.getSetSpeedCmd(idpCounter, newFanSpeed, devicePin);
         case PicoCommandTypeEnum.CHANGE_TARGET_HUMIDITY:
-          // TODO: Handle this case.
-          throw UnimplementedError();
+          if (newSUmd == null) {
+            throw ArgumentError('newSUmd must be provided for CHANGE_TARGET_HUMIDITY command');
+          }
+          command = CommandUtils.getSetTargetHumidityCmd(idpCounter, newSUmd, devicePin);
       }
 
       // Execute the command
@@ -557,19 +561,22 @@ class _PicoStatusPageState extends ConsumerState<PicoStatusPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildHumidityTargetContainer(40, deviceStatus.sUmd == 1),
+        _buildHumidityTargetContainer(1, 40, deviceStatus.sUmd == 1),
         const SizedBox(width: 16),
-        _buildHumidityTargetContainer(50, deviceStatus.sUmd == 2),
+        _buildHumidityTargetContainer(2, 50, deviceStatus.sUmd == 2),
         const SizedBox(width: 16),
-        _buildHumidityTargetContainer(60, deviceStatus.sUmd == 3),
+        _buildHumidityTargetContainer(3, 60, deviceStatus.sUmd == 3),
       ],
     );
   }
 
-  Widget _buildHumidityTargetContainer(int target, bool selected) {
+  Widget _buildHumidityTargetContainer(int sUmd, int target, bool selected) {
     return GestureDetector(
-      onTap: () async {
-
+      onTap: () {
+        _executeCommand(
+          commandType: PicoCommandTypeEnum.CHANGE_TARGET_HUMIDITY,
+          newSUmd: sUmd,
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16),
