@@ -28,9 +28,9 @@ It has been a key point for developing the [Hassio Open Pico](https://github.com
 - Single user support only (APIs support only one valid token at a time)
 
 ## Tested On 🧪
-- PICO PRO 30 **(ACD100056)**
+- PICO PRO PLUS 30 **(ACD100052)**
 
-*Should work on all Pico models*
+*Most features should work on all Pico models*
 
 ## Token Architecture 🔐
 
