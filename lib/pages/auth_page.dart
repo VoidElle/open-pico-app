@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:open_pico_app/pages/offline/offline_devices_list_page.dart';
 import 'package:open_pico_app/repositories/secure_storage_repository.dart';
 import 'package:open_pico_app/use_cases/secure_storage/secure_storage_write_read_login_data_usecase.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -64,8 +66,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildTitle(context),
+              Spacer(),
+              _buildTitle(),
               _buildForm(),
+              Spacer(),
+              _buildOfflineModeButton(),
             ],
           ),
         ),
@@ -74,7 +79,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   }
 
   // Widget to build the title
-  Widget _buildTitle(BuildContext context) {
+  Widget _buildTitle() {
     return Text(
       tr("login_page.title"),
       style: Theme.of(context).textTheme.titleLarge,
@@ -157,4 +162,28 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       },
     );
   }
+
+  // Button to enter offline mode
+  Widget _buildOfflineModeButton() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.blue,
+          width: 1.5,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextButton(
+        onPressed: () => context.push(OfflineDevicesListPage.route),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16),
+          foregroundColor: Colors.blue,
+        ),
+        child: Text(
+          tr("OFFLINE MODE"),
+        ),
+      ),
+    );
+  }
+
 }

@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:open_pico_app/pages/auth_page.dart';
+import 'package:open_pico_app/pages/offline/offline_devices_list_page.dart';
 import 'package:open_pico_app/pages/pico_status_page.dart';
 import 'package:open_pico_app/pages/plants_list_page.dart';
 import 'package:open_pico_app/repositories/secure_storage_repository.dart';
+import 'package:open_pico_app/repositories/shared_preferences_repository.dart';
 import 'package:open_pico_app/utils/constants/translations_constants.dart';
 import 'package:open_pico_app/utils/global_singleton.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -34,6 +36,9 @@ Future<void> main() async {
   // Initialize the secure storage repository
   SecureStorageRepository.initialize();
 
+  // Initialize the shared preferences repository
+  await SharedPreferencesRepository.initialize();
+
   // runApp with localization and Riverpod handling
   runApp(
     EasyLocalization(
@@ -52,20 +57,24 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       path: AuthPage.route,
-      builder: (BuildContext context, GoRouterState state) => AuthPage(),
+      builder: (BuildContext _, GoRouterState _) => AuthPage(),
     ),
     GoRoute(
       path: PlantsListPage.route,
-      builder: (BuildContext context, GoRouterState state) => PlantsListPage(),
+      builder: (BuildContext _, GoRouterState _) => PlantsListPage(),
     ),
     GoRoute(
       path: PicoStatusPage.route,
-      builder: (BuildContext context, GoRouterState state) {
+      builder: (BuildContext _, GoRouterState state) {
         final PicoStatusPageProps picoStatusPageProps = state.extra as PicoStatusPageProps;
         return PicoStatusPage(
           picoStatusPageProps: picoStatusPageProps,
         );
       },
+    ),
+    GoRoute(
+      path: OfflineDevicesListPage.route,
+      builder: (BuildContext _, GoRouterState _) => OfflineDevicesListPage(),
     ),
   ],
 );
