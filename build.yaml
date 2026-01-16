@@ -24,6 +24,9 @@ targets:
           - lib/use_cases/pico/**.dart
           - lib/use_cases/utils/**.dart
 
+          # Utils
+          - lib/utils/**.dart
+
         options:
           build_extensions:
 
@@ -45,6 +48,9 @@ targets:
             '^lib/use_cases/status/{{}}.dart': 'lib/use_cases/status/generated/{{}}.g.dart'
             '^lib/use_cases/pico/{{}}.dart': 'lib/use_cases/pico/generated/{{}}.g.dart'
             '^lib/use_cases/utils/{{}}.dart': 'lib/use_cases/utils/generated/{{}}.g.dart'
+
+            # Utils
+            '^lib/utils/{{}}.dart': 'lib/utils/generated/{{}}.g.dart'
 
       freezed|freezed:
         enabled: true
@@ -69,4 +75,7 @@ targets:
             '^lib/use_cases/status/{{}}.dart': 'lib/use_cases/status/generated/{{}}.freezed.dart'
             '^lib/use_cases/pico/{{}}.dart': 'lib/use_cases/pico/generated/{{}}.freezed.dart'
             '^lib/use_cases/utils/{{}}.dart': 'lib/use_cases/utils/generated/{{}}.freezed.dart'
+
+            # Utils
+            '^lib/utils/{{}}.dart': 'lib/use_cases/generated/{{}}.freezed.dart'
 
