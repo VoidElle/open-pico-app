@@ -140,10 +140,11 @@ class _DevicesListPageState extends ConsumerState<PlantsListPage> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                'ID: ${device.deviceId ?? 'N/A'}',
+                'ID: ${device.deviceId ?? 'N/A'} | Type: ${device.lvdvType ?? 'N/A'}',
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
               onTap: () async {
+                debugPrint('[PlantsListPage] Tapped device: ${device.name}, serial: ${device.serial}, lvdvType: ${device.lvdvType}, lvdvId: ${device.lvdvId}, deviceId: ${device.deviceId}');
                 await ref
                     .read(getDeviceDetailsTapUsecaseProvider)
                     .execute(
