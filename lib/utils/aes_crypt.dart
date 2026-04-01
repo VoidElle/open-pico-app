@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_pico_app/repositories/global_token_repository.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 
-
+part 'generated/aes_crypt.g.dart';
 
 class AESCrypt {
 
