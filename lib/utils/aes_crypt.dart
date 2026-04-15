@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:open_pico_app/repositories/global_token_repository.dart';
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'generated/aes_crypt.g.dart';
 
@@ -94,6 +95,3 @@ class AESCrypt {
 
 }
 
-// Expose the AESCrypt instance as a provider
-@Riverpod(keepAlive: true)
-AESCrypt aesCrypt(Ref ref) => AESCrypt(ref, CypherConstants.deviceId);

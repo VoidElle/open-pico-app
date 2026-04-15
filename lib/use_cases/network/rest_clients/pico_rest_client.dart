@@ -29,6 +29,10 @@ abstract class PicoRestClient {
       @Query("PIN") String pin,
   );
 
+  // Note: GetHome for CU/Polaris devices is called directly via Dio
+  // in PlantsResponsesParser because the response format (JSON array)
+  // differs from the standard ResCode/ResDescr wrapper used by Retrofit.
+
   @POST('/api/v1/SendPicoCmd')
   @Headers(HeadersConstants.commonWithJsonRequestHeaders)
   Future<CommonResponseWrapper> executeCommand(
