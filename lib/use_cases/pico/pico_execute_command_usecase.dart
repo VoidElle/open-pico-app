@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/requests/request_command_model.dart';
 import '../../models/responses/common_response_wrapper.dart';
+import '../../providers/global/aes_crypt_provider.dart';
 import '../../providers/global/global_providers.dart';
 import '../../providers/global/global_rest_client_providers.dart';
 import '../../repositories/secure_storage_repository.dart';
-import '../../utils/aes_crypt.dart';
 import '../../utils/constants/network_constants.dart';
 import '../network/core/network_handler.dart';
 import '../secure_storage/secure_storage_write_read_device_pin_usecase.dart';

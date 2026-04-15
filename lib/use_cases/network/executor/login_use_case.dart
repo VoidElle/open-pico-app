@@ -13,10 +13,10 @@ import 'package:open_pico_app/use_cases/secure_storage/secure_storage_write_read
 import 'package:open_pico_app/utils/constants/cypher_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../providers/global/aes_crypt_provider.dart';
 import '../../../providers/global/global_providers.dart';
 import '../../../providers/global/global_rest_client_providers.dart';
 import '../../../providers/pages/auth_page_providers.dart';
-import '../../../utils/aes_crypt.dart';
 import '../../../utils/constants/network_constants.dart';
 
 part 'generated/login_use_case.g.dart';
